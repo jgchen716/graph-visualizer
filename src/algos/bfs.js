@@ -1,21 +1,27 @@
 import { adjList } from "../components/Graph";
 
-const bfs = (props) => {
+const bfs = (start) => {
   const seen = new Set();
-  let queue = [props.start];
+  let queue = [start];
   let res = [];
-  while (queue.length !== 0) {
+  var i = 0;
+  while (queue.length !== 0 && i++ < 10) {
     res.push([...queue]);
     let tempQueue = [];
-    for (const node of queue) {
-      seen.add(node);
-      for (const { neighbor, weight } of adjList[node]) {
-        if (!tempQueue.includes(neighbor) && !seen.has(neighbor)) {
+    queue.forEach((parent) => {
+      seen.add(parent);
+      adjList.get(parent).forEach(({ node, weight }) => {
+        if (!tempQueue.includes(node) && !seen.has(node)) {
           tempQueue.push(node);
         }
-      }
-    }
+      });
+    });
     queue = [...tempQueue];
+    console.log(queue);
   }
   return res;
 };
+
+export default bfs;
+
+load(["a", "b", "c"], ["a", "b", "a", "c", "c", "b"]);

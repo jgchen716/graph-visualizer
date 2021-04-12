@@ -1,8 +1,6 @@
 import { adjList } from "../components/Graph";
 
-const dijkstra = (props) => {
-  const start = props.start;
-  const end = props.end;
+const dijkstra = (start) => {
   const distances = new Map();
   const res = [];
   for (const node of adjList.keys()) {
@@ -12,5 +10,20 @@ const dijkstra = (props) => {
 
   // max is number of keys
   let numIterations = 0;
-  while (numIterations++ < adjList.size) {}
+  while (numIterations++ < adjList.size) {
+    let minDist = Number.MAX_VALUE;
+    let minNode = -1;
+    distances.forEach((val, key) => {
+      if (val < minDist) {
+        minNode = key;
+        minDist = val;
+      }
+    });
+    res.push(minNode);
+    distances.delete(minNode);
+    adjList.get(minNode).forEach(({ node, weight }) => {
+      distances.set(node, Math.min(distances.get(node), minDist + weight));
+    });
+  }
+  return res;
 };
