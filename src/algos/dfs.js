@@ -1,8 +1,6 @@
-import { adjList } from "../components/Graph";
-
 // start - node to start DFS from
 // only visits nodes reachable from start
-const dfs = (start) => {
+const dfs = (start, g) => {
   // stack for iterative DFS
   const stack = [];
   // array of nodes to return
@@ -14,7 +12,8 @@ const dfs = (start) => {
 
   while (stack.length !== 0) {
     const curr = stack.pop();
-    const outneighbors = adjList.get(curr);
+    const outneighbors = g.adjList.get(curr);
+
     if (!discovered.has(curr)) {
       result.push(curr);
       discovered.add(curr);

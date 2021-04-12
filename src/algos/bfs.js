@@ -1,6 +1,4 @@
-import { adjList } from "../components/Graph";
-
-const bfs = (start) => {
+const bfs = (start, g) => {
   const seen = new Set();
   let queue = [start];
   let res = [];
@@ -10,18 +8,15 @@ const bfs = (start) => {
     let tempQueue = [];
     queue.forEach((parent) => {
       seen.add(parent);
-      adjList.get(parent).forEach(({ node, weight }) => {
+      g.adjList.get(parent).forEach(({ node, weight }) => {
         if (!tempQueue.includes(node) && !seen.has(node)) {
           tempQueue.push(node);
         }
       });
     });
     queue = [...tempQueue];
-    console.log(queue);
   }
   return res;
 };
 
 export default bfs;
-
-load(["a", "b", "c"], ["a", "b", "a", "c", "c", "b"]);
