@@ -24,7 +24,7 @@ class Graph extends Component {
 
     // remove from lists of neighbors
     this.adjList.forEach((node) => {
-      const neighbors = this.adjList[node];
+      const neighbors = this.adjList.get(node);
       if (neighbors.has(id)) {
         neighbors.delete(id);
       }
