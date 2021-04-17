@@ -1,10 +1,13 @@
+body {
+  background-color: #dddddd;
+}
+
 .App {
   text-align: center;
   height: 100vh;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
   overflow-y: hidden;
-  background-color: #dddddd;
 }
 
 .canvas,
@@ -31,4 +34,11 @@
 .graph {
   height: 100%;
   width: 100%;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }

@@ -1,7 +1,7 @@
 // Code for handling single and double clicks
 // Reference: https://medium.com/trabe/prevent-click-events-on-double-click-with-react-with-and-without-hooks-6bf3697abc40
 
-import { useRef, Component, ComponentWrapper } from "react";
+import { Component } from "react";
 
 const cancellablePromise = (promise) => {
   let isCanceled = false;

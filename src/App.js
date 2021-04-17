@@ -1,5 +1,4 @@
 import "./App.css";
-import Canvas from "./components/Canvas";
 import Graph from "./components/Graph";
 import Toolbar from "./components/Toolbar";
 

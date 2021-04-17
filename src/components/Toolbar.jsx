@@ -10,8 +10,6 @@ const Toolbar = (props) => {
   const [selectedType, setSelectedType] = useState("undirected");
   // state for unweighted vs weighted graph
   const [selectedWeight, setSelectedWeight] = useState("unweighted");
-  // // state for button disabled
-  // const [btnDisabled, setBtnDisabled] = useState();
 
   // disable buttons based on current graph specifications
   const isDisabled = (alg) => {
@@ -74,6 +72,57 @@ const Toolbar = (props) => {
 
   return (
     <div className="toolbar">
+      <div className="button-group">
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "bfs")}
+          disabled={isDisabled("bfs")}
+        >
+          BFS
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "dfs")}
+          disabled={isDisabled("dfs")}
+        >
+          DFS
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "dijkstra")}
+          disabled={isDisabled("dijkstra")}
+        >
+          Dijkstra
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "topo sort")}
+          disabled={isDisabled("topo sort")}
+        >
+          Topo Sort
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "clustering")}
+          disabled={isDisabled("clustering")}
+        >
+          Clustering Coefficient
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "bridges")}
+          disabled={isDisabled("bridges")}
+        >
+          Bridges
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={(e) => handleClick(e, "triadic")}
+          disabled={isDisabled("triadic")}
+        >
+          Triadic Closure
+        </Button>
+      </div>
       <FormControl component="fieldset">
         <RadioGroup
           aria-label="graph-type"
@@ -83,12 +132,12 @@ const Toolbar = (props) => {
         >
           <FormControlLabel
             value="undirected"
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Undirected"
           />
           <FormControlLabel
             value="directed"
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Directed"
           />
         </RadioGroup>
@@ -103,66 +152,16 @@ const Toolbar = (props) => {
         >
           <FormControlLabel
             value="unweighted"
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Unweighted"
           />
           <FormControlLabel
             value="weighted"
-            control={<Radio />}
+            control={<Radio color="primary" />}
             label="Weighted"
           />
         </RadioGroup>
       </FormControl>
-
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "bfs")}
-        disabled={isDisabled("bfs")}
-      >
-        BFS
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "dfs")}
-        disabled={isDisabled("dfs")}
-      >
-        DFS
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "dijkstra")}
-        disabled={isDisabled("dijkstra")}
-      >
-        Dijkstra
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "topo sort")}
-        disabled={isDisabled("topo sort")}
-      >
-        Topo Sort
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "clustering")}
-        disabled={isDisabled("clustering")}
-      >
-        Clustering Coefficient
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "bridges")}
-        disabled={isDisabled("bridges")}
-      >
-        Bridges
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={(e) => handleClick(e, "triadic")}
-        disabled={isDisabled("triadic")}
-      >
-        Triadic Closure
-      </Button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Draggable, { DraggableCore } from "react-draggable"; // Both at the same time
+import Draggable from "react-draggable"; // Both at the same time
 
 const circleStyle = (selected) => {
   return {
@@ -22,7 +22,7 @@ class Graph extends Component {
     // Map<Node, Object{Node, Edge Weight}[]>
     this.adjList = new Map();
     this.nodeToElement = new Map();
-    this.state = { nodes: [], selectedId: 1 };
+    this.state = { nextId: 0, selectedId: 1 };
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
@@ -45,22 +45,17 @@ class Graph extends Component {
     if (!this.adjList.has(id)) {
       this.adjList.set(id, []);
 
-      const [x, y] = this.getClickCoords(e);
-      this.nodeToElement.set(
-        id,
-        <div
-          style={
-            (circleStyle(false),
-            {
-              position: "absolute",
-              left: `${x}px`,
-              top: `${y}px`,
-            })
-          }
-        >
-          {id}
-        </div>
-      );
+      // const [x, y] = this.getClickCoords(e);
+      this.nodeToElement.set(id, () => (
+        <Draggable bounds="parent">
+          <div
+            style={circleStyle(this.state.selectedId === id)}
+            onClick={(e) => this.selectNode(e, id)}
+          >
+            {id}
+          </div>
+        </Draggable>
+      ));
 
       this.forceUpdate();
       this.setState({ selectedId: id });
@@ -74,6 +69,7 @@ class Graph extends Component {
   removeNode = (id) => {
     // remove entry in adjacency list
     this.adjList.delete(id);
+    this.nodeToElement.delete(id);
 
     // remove from lists of neighbors
     this.adjList.forEach((node) => {
@@ -114,33 +110,20 @@ class Graph extends Component {
 
   render() {
     const nodes = [];
-    const it = this.adjList.keys();
+    const it = this.nodeToElement.values();
     let res = it.next();
-    console.log(this.adjList.size + "   " + this.nodeToElement.size);
     while (!res.done) {
-      const id = res.value;
-      nodes.push(
-        <Draggable bounds="parent">
-          <div
-            style={circleStyle(this.state.selectedId === id)}
-            onClick={(e) => this.selectNode(e, id)}
-          >
-            {id}
-          </div>
-        </Draggable>
-      );
+      nodes.push(res.value());
       res = it.next();
     }
-    console.log(nodes);
     return (
       <div
         onClick={() => {
-          console.log("clicked");
           this.setState({ selectedId: -1 });
         }}
         onDoubleClick={(e) => {
-          console.log("double click");
-          this.addNode(e, Math.floor(Math.random() * 10).toFixed(0));
+          this.addNode(e, this.state.nextId);
+          this.setState({ nextId: this.state.nextId + 1 });
         }}
         className="canvas"
       >
