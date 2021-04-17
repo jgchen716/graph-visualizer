@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable"; // Both at the same time
 
-const circleStyle = (selected) => {
+const DIM = 62.5;
+
+const circleStyle = (selected, x, y) => {
   return {
     padding: 0,
     margin: 10,
@@ -9,9 +11,12 @@ const circleStyle = (selected) => {
     backgroundColor: selected ? "#ffd3b4" : "#98ddca",
     borderRadius: "50%",
     border: "2px solid black",
-    width: 62.5,
-    height: 62.5,
-    lineHeight: "62.5px",
+    width: DIM,
+    height: DIM,
+    lineHeight: `${DIM}px`,
+    left: `${x - DIM / 2}px`,
+    top: `${y - DIM / 2}px`,
+    outlineWidth: 0,
   };
 };
 
@@ -27,7 +32,6 @@ class Graph extends Component {
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
-    // this.getClickCoords = this.getClickCoords.bind(this);
   }
 
   getClickCoords = (event) => {
@@ -45,11 +49,17 @@ class Graph extends Component {
     if (!this.adjList.has(id)) {
       this.adjList.set(id, []);
 
-      // const [x, y] = this.getClickCoords(e);
+      const [x, y] = this.getClickCoords(e);
       this.nodeToElement.set(id, () => (
-        <Draggable bounds="parent">
+        <Draggable bounds="parent" key={id}>
           <div
-            style={circleStyle(this.state.selectedId === id)}
+            tabIndex="1"
+            onKeyDown={(e) => {
+              if (e.key === "Backspace" || e.key === "Delete") {
+                this.removeNode(id);
+              }
+            }}
+            style={circleStyle(this.state.selectedId === id, x, y)}
             onClick={(e) => this.selectNode(e, id)}
           >
             {id}
@@ -57,9 +67,8 @@ class Graph extends Component {
         </Draggable>
       ));
 
-      this.forceUpdate();
       this.setState({ selectedId: id });
-      // console.log(this.nodeToElement);
+      this.forceUpdate();
     }
     return this;
   };
@@ -67,17 +76,18 @@ class Graph extends Component {
   // remove node if it's in the graph
   // no effect if node isn't in graph
   removeNode = (id) => {
-    // remove entry in adjacency list
-    this.adjList.delete(id);
-    this.nodeToElement.delete(id);
-
     // remove from lists of neighbors
-    this.adjList.forEach((node) => {
-      const neighbors = this.adjList.get(node);
-      if (neighbors.has(id)) {
-        neighbors.delete(id);
-      }
+    this.adjList.forEach((neighbors, node) => {
+      this.adjList.set(
+        node,
+        neighbors.filter((val) => val !== id)
+      );
+
+      // remove entry in adjacency list
+      this.adjList.delete(id);
+      this.nodeToElement.delete(id);
     });
+    this.forceUpdate();
     return this;
   };
 
@@ -122,8 +132,10 @@ class Graph extends Component {
           this.setState({ selectedId: -1 });
         }}
         onDoubleClick={(e) => {
-          this.addNode(e, this.state.nextId);
-          this.setState({ nextId: this.state.nextId + 1 });
+          if (this.state.selectedId < 0) {
+            this.addNode(e, this.state.nextId);
+            this.setState({ nextId: this.state.nextId + 1 });
+          }
         }}
         className="canvas"
       >
