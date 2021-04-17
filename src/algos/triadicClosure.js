@@ -1,3 +1,4 @@
+// INVARIANT: assumes undirected graph
 // returns a Set of obj {NodeA, NodeB}, which represents edges formed
 // Note: if edge forms between NodeA and NodeB, output set will contain
 // {NodeA, NodeB} and {NodeB, NodeA}

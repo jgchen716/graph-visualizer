@@ -1,12 +1,9 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Graph from "./components/Graph";
+// import Graph from "./components/Graph";
+import Canvas from "./components/Canvas";
 
 function App() {
-  let g = new Graph();
-  g.addNode("a");
-  g.addNode("b");
-  g.addEdge("a", "b", 1);
   return (
     <div className="App">
       <header className="App-header">
@@ -22,7 +19,7 @@ function App() {
         >
           Learn React
         </a>
-        {g.render()}
+        <Canvas />
       </header>
     </div>
   );
