@@ -22,10 +22,11 @@ class Graph extends Component {
     // Map<Node, Object{Node, Edge Weight}[]>
     this.adjList = new Map();
     this.nodeToElement = new Map();
-    this.state = { selectedId: 1 };
+    this.state = { nodes: [], selectedId: 1 };
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
+    this.selectNode = this.selectNode.bind(this);
     // this.getClickCoords = this.getClickCoords.bind(this);
   }
 
@@ -62,9 +63,7 @@ class Graph extends Component {
       );
 
       this.forceUpdate();
-
       this.setState({ selectedId: id });
-
       // console.log(this.nodeToElement);
     }
     return this;
@@ -108,35 +107,46 @@ class Graph extends Component {
     return this;
   };
 
-  load = (nodes, edges) => {
-    for (var i = 0; i < nodes.length; i++) {
-      this.addNode(nodes[i]);
-    }
-    for (i = 0; i < edges.length; i += 3) {
-      this.addEdge(edges[i], edges[i + 1], edges[i + 2]);
-    }
+  selectNode = (e, id) => {
+    this.setState({ selectedId: id });
+    e.stopPropagation();
   };
 
   render() {
     const nodes = [];
-    const it = this.nodeToElement.keys();
-    // console.log(this.nodeToElement);
+    const it = this.adjList.keys();
     let res = it.next();
     console.log(this.adjList.size + "   " + this.nodeToElement.size);
     while (!res.done) {
-      // console.log(res.value);
+      const id = res.value;
       nodes.push(
         <Draggable bounds="parent">
-          {/* {res.value} */}
-          <div style={circleStyle(this.state.selectedId === res.value)}>
-            {res.value}
+          <div
+            style={circleStyle(this.state.selectedId === id)}
+            onClick={(e) => this.selectNode(e, id)}
+          >
+            {id}
           </div>
         </Draggable>
       );
       res = it.next();
     }
-    // console.log(nodes);
-    return <div className="graph">{nodes}</div>;
+    console.log(nodes);
+    return (
+      <div
+        onClick={() => {
+          console.log("clicked");
+          this.setState({ selectedId: -1 });
+        }}
+        onDoubleClick={(e) => {
+          console.log("double click");
+          this.addNode(e, Math.floor(Math.random() * 10).toFixed(0));
+        }}
+        className="canvas"
+      >
+        <div className="graph">{nodes}</div>
+      </div>
+    );
   }
 }
 

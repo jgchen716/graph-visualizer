@@ -24,6 +24,7 @@ class Canvas extends Component {
 
   selectNode(e) {
     console.log("selecting node");
+    // this.state.graph.setState({ selectedId: -1 });
     // this.forceUpdate();
   }
 
@@ -38,12 +39,12 @@ class Canvas extends Component {
     return (
       <pleaseStopTriggeringClicksOnDoubleClick>
         <div
-          // onClick={this.selectNode}
+          onClick={(e) => this.selectNode(e)}
           onDoubleClick={this.placeNode}
           className="canvas"
         >
-          {/* {this.state.graph.render()} */}
-          <Graph selectNode={this.selectNode} />
+          {this.state.graph.render()}
+          {/* <Graph selectNode={this.selectNode} placeNode={this.placeNode} /> */}
         </div>
       </pleaseStopTriggeringClicksOnDoubleClick>
     );

@@ -10,16 +10,18 @@ const Toolbar = (props) => {
   const [selectedType, setSelectedType] = useState("undirected");
   // state for unweighted vs weighted graph
   const [selectedWeight, setSelectedWeight] = useState("unweighted");
+  // // state for button disabled
+  // const [btnDisabled, setBtnDisabled] = useState();
 
   // disable buttons based on current graph specifications
   const isDisabled = (alg) => {
     if (alg === "bfs" || alg === "dfs" || alg === "dijkstra") {
-      return true;
+      return false;
     } else if (alg === "clustering" || alg === "bridges") {
-      return selectedType === "undirected";
+      return selectedType !== "undirected";
     } else if (alg === "topo sort") {
       // need to check for cycles??
-      return selectedType === "directed";
+      return selectedType !== "directed";
     } else {
       return false;
     }
@@ -115,49 +117,49 @@ const Toolbar = (props) => {
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "bfs")}
-        disabled={() => isDisabled("bfs")}
+        disabled={isDisabled("bfs")}
       >
         BFS
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "dfs")}
-        disabled={() => isDisabled("dfs")}
+        disabled={isDisabled("dfs")}
       >
         DFS
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "dijkstra")}
-        disabled={() => isDisabled("dijkstra")}
+        disabled={isDisabled("dijkstra")}
       >
         Dijkstra
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "topo sort")}
-        disabled={() => isDisabled("topo sort")}
+        disabled={isDisabled("topo sort")}
       >
         Topo Sort
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "clustering")}
-        disabled={() => isDisabled("clustering")}
+        disabled={isDisabled("clustering")}
       >
         Clustering Coefficient
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "bridges")}
-        disabled={() => isDisabled("bridges")}
+        disabled={isDisabled("bridges")}
       >
         Bridges
       </Button>
       <Button
         variant="outlined"
         onClick={(e) => handleClick(e, "triadic")}
-        disabled={() => isDisabled("triadic")}
+        disabled={isDisabled("triadic")}
       >
         Triadic Closure
       </Button>
