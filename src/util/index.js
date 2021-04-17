@@ -1,7 +1,7 @@
 // Code for handling single and double clicks
 // Reference: https://medium.com/trabe/prevent-click-events-on-double-click-with-react-with-and-without-hooks-6bf3697abc40
 
-import { useRef } from "react";
+import { useRef, Component, ComponentWrapper } from "react";
 
 const cancellablePromise = (promise) => {
   let isCanceled = false;
@@ -19,59 +19,80 @@ const cancellablePromise = (promise) => {
   };
 };
 
-// const noop = () => {};
+const noop = () => {};
 const delay = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
-const useCancellablePromises = () => {
-  const pendingPromises = useRef([]);
+const pleaseStopTriggeringClicksOnDoubleClick = (WrappedComponent) => {
+  class ComponentWrapper extends Component {
+    componentWillUnmount() {
+      // cancel all pending promises to avoid
+      // side effects when the component is unmounted
+      this.clearPendingPromises();
+    }
 
-  const appendPendingPromise = (promise) =>
-    (pendingPromises.current = [...pendingPromises.current, promise]);
+    pendingPromises = [];
 
-  const removePendingPromise = (promise) =>
-    (pendingPromises.current = pendingPromises.current.filter(
-      (p) => p !== promise
-    ));
+    appendPendingPromise = (promise) =>
+      (this.pendingPromises = [...this.pendingPromises, promise]);
 
-  const clearPendingPromises = () =>
-    pendingPromises.current.map((p) => p.cancel());
+    removePendingPromise = (promise) =>
+      (this.pendingPromises = this.pendingPromises.filter(
+        (p) => p !== promise
+      ));
 
-  const api = {
-    appendPendingPromise,
-    removePendingPromise,
-    clearPendingPromises,
+    clearPendingPromises = () => this.pendingPromises.map((p) => p.cancel());
+
+    handleClick = () => {
+      // create the cancelable promise and add it to
+      // the pending promises queue
+      const waitForClick = cancellablePromise(delay(300));
+      this.appendPendingPromise(waitForClick);
+
+      return waitForClick.promise
+        .then(() => {
+          // if the promise wasn't cancelled, we execute
+          // the callback and remove it from the queue
+          this.removePendingPromise(waitForClick);
+          this.props.onClick();
+        })
+        .catch((errorInfo) => {
+          // rethrow the error if the promise wasn't
+          // rejected because of a cancelation
+          this.removePendingPromise(waitForClick);
+          if (!errorInfo.isCanceled) {
+            throw errorInfo.error;
+          }
+        });
+    };
+
+    handleDoubleClick = () => {
+      // all (click) pending promises are part of a
+      // dblclick event so we cancel them
+      this.clearPendingPromises();
+      this.props.onDoubleClick();
+    };
+
+    render() {
+      return (
+        <WrappedComponent
+          {...this.props}
+          onClick={this.handleClick}
+          onDoubleClick={this.handleDoubleClick}
+        />
+      );
+    }
+  }
+
+  ComponentWrapper.displayName = `withClickPrevention(${
+    WrappedComponent.displayName || WrappedComponent.name || "Component"
+  })`;
+
+  ComponentWrapper.defaultProps = {
+    onClick: noop,
+    onDoubleClick: noop,
   };
 
-  return api;
+  return ComponentWrapper;
 };
 
-const useClickPreventionOnDoubleClick = (onClick, onDoubleClick) => {
-  const api = useCancellablePromises();
-
-  const handleClick = () => {
-    api.clearPendingPromises();
-    const waitForClick = cancellablePromise(delay(300));
-    api.appendPendingPromise(waitForClick);
-
-    return waitForClick.promise
-      .then(() => {
-        api.removePendingPromise(waitForClick);
-        onClick();
-      })
-      .catch((errorInfo) => {
-        api.removePendingPromise(waitForClick);
-        if (!errorInfo.isCanceled) {
-          throw errorInfo.error;
-        }
-      });
-  };
-
-  const handleDoubleClick = () => {
-    api.clearPendingPromises();
-    onDoubleClick();
-  };
-
-  return [handleClick, handleDoubleClick];
-};
-
-export default useClickPreventionOnDoubleClick;
+export default pleaseStopTriggeringClicksOnDoubleClick;
