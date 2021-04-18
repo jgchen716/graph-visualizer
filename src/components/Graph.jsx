@@ -27,11 +27,13 @@ class Graph extends Component {
     // Map<Node, Object{Node, Edge Weight}[]>
     this.adjList = new Map();
     this.nodeToElement = new Map();
+    this.deltaPositions = new Map();
     this.state = { nextId: 0, selectedId: 1 };
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
+    this.addEdge = this.addEdge.bind(this);
   }
 
   getClickCoords = (event) => {
@@ -51,7 +53,16 @@ class Graph extends Component {
 
       const [x, y] = this.getClickCoords(e);
       this.nodeToElement.set(id, () => (
-        <Draggable bounds="parent" key={id}>
+        <Draggable
+          bounds="parent"
+          key={id}
+          onDrag={(e, ui) => {
+            this.deltaPositions.set(id, {
+              x: this.deltaPositions.get(id)["x"] + ui.deltaX,
+              y: this.deltaPositions.get(id)["y"] + ui.deltaY,
+            });
+          }}
+        >
           <div
             tabIndex="1"
             onKeyDown={(e) => {
@@ -66,6 +77,11 @@ class Graph extends Component {
           </div>
         </Draggable>
       ));
+      this.deltaPositions.set(id, { x: x, y: y });
+
+      if (this.adjList.has(0) && this.adjList.has(1)) {
+        this.addEdge(0, 1, 1);
+      }
 
       this.setState({ selectedId: id });
       this.forceUpdate();
@@ -86,6 +102,7 @@ class Graph extends Component {
       // remove entry in adjacency list
       this.adjList.delete(id);
       this.nodeToElement.delete(id);
+      this.deltaPositions.delete(id);
     });
     this.forceUpdate();
     return this;
@@ -95,7 +112,7 @@ class Graph extends Component {
   addEdge = (outNode, inNode, weight) => {
     if (this.adjList.has(outNode) && this.adjList.has(inNode)) {
       this.adjList.set(outNode, [
-        ...this.adjList.get(outNode),
+        ...this.adjList.get(outNode).filter((obj) => obj.node !== inNode),
         { node: inNode, weight: weight },
       ]);
     }
@@ -126,6 +143,40 @@ class Graph extends Component {
       nodes.push(res.value());
       res = it.next();
     }
+
+    console.log(this.deltaPositions);
+    const edges = [];
+    var count = 0;
+    this.adjList.forEach((neighbors, id) => {
+      console.log(`id: ${id}`);
+      neighbors.forEach((neighbor) => {
+        console.log(this.nodeToElement.get(id)());
+        console.log(this.nodeToElement.get(id)().clientX);
+        // console.log(
+        //   this.nodeToElement.get(id).clientX +
+        //     ", " +
+        //     this.nodeToElement.get(id).clientY
+        // );
+        console.log(neighbor);
+        count++;
+        const x1 = this.deltaPositions.get(id)["x"];
+        const y1 = this.deltaPositions.get(id)["y"];
+        const x2 = this.deltaPositions.get(neighbor.node)["x"];
+        const y2 = this.deltaPositions.get(neighbor.node)["y"];
+        edges.push(
+          <svg
+            width="100"
+            height="200"
+            style={{ position: "absolute" }}
+            key={id + "-" + neighbor.node}
+          >
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="black" />
+          </svg>
+        );
+      });
+      console.log(`count: ${count}\n===========`);
+    });
+
     return (
       <div
         onClick={() => {
@@ -139,7 +190,10 @@ class Graph extends Component {
         }}
         className="canvas"
       >
-        <div className="graph">{nodes}</div>
+        <div className="graph">
+          {nodes}
+          {edges}
+        </div>
       </div>
     );
   }
