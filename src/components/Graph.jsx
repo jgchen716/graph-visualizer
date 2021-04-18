@@ -146,27 +146,21 @@ class Graph extends Component {
 
     console.log(this.deltaPositions);
     const edges = [];
-    var count = 0;
     this.adjList.forEach((neighbors, id) => {
-      console.log(`id: ${id}`);
       neighbors.forEach((neighbor) => {
-        console.log(this.nodeToElement.get(id)());
-        console.log(this.nodeToElement.get(id)().clientX);
         // console.log(
         //   this.nodeToElement.get(id).clientX +
         //     ", " +
         //     this.nodeToElement.get(id).clientY
         // );
-        console.log(neighbor);
-        count++;
         const x1 = this.deltaPositions.get(id)["x"];
         const y1 = this.deltaPositions.get(id)["y"];
         const x2 = this.deltaPositions.get(neighbor.node)["x"];
         const y2 = this.deltaPositions.get(neighbor.node)["y"];
         edges.push(
           <svg
-            width="100"
-            height="200"
+            width="100%"
+            height="auto"
             style={{ position: "absolute" }}
             key={id + "-" + neighbor.node}
           >
@@ -174,7 +168,6 @@ class Graph extends Component {
           </svg>
         );
       });
-      console.log(`count: ${count}\n===========`);
     });
 
     return (
@@ -191,8 +184,8 @@ class Graph extends Component {
         className="canvas"
       >
         <div className="graph">
+          {/* {edges} */}
           {nodes}
-          {edges}
         </div>
       </div>
     );
