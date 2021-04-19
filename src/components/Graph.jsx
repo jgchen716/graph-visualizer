@@ -242,6 +242,37 @@ class Graph extends Component {
                 if (e.key === "Backspace" || e.key === "Delete") {
                   this.removeEdge(id, neighbor.node);
                   this.setState({ selectedEdge: { a: -1, b: -1 } });
+                } else if (e.key === "Enter") {
+                  this.removeEdge(id, neighbor.node);
+                  this.addEdge(id, neighbor.node, 0);
+                } else if (
+                  e.key === "0" ||
+                  e.key === "1" ||
+                  e.key === "2" ||
+                  e.key === "3" ||
+                  e.key === "4" ||
+                  e.key === "5" ||
+                  e.key === "6" ||
+                  e.key === "7" ||
+                  e.key === "8" ||
+                  e.key === "9"
+                ) {
+                  let edgeWeight = 1;
+                  this.adjList
+                    .get(id)
+                    .forEach(
+                      ({ node, weight }) =>
+                        (edgeWeight =
+                          node === neighbor.node ? weight : edgeWeight)
+                    );
+                  this.removeEdge(id, neighbor.node);
+                  this.addEdge(
+                    id,
+                    neighbor.node,
+                    edgeWeight * 10 + parseInt(e.key)
+                  );
+                  console.log(this.adjList);
+                  this.forceUpdate();
                 }
               }}
             />
@@ -249,6 +280,7 @@ class Graph extends Component {
         }
       });
     });
+    console.log(this.state);
 
     return (
       <div
