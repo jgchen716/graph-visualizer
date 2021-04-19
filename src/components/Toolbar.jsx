@@ -70,6 +70,7 @@ const Toolbar = (props) => {
     }
   };
 
+  // clear graph AND results panel??
   const handleClear = () => {};
 
   return (

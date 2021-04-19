@@ -21,6 +21,10 @@ const circleStyle = (selected, x, y) => {
   };
 };
 
+const edgeColor = (selected) => {
+  return selected ? "#ffd3b4" : "#98ddca";
+};
+
 class Graph extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +36,8 @@ class Graph extends Component {
     this.state = {
       nextId: 0,
       selectedId: 1,
-      undirected: true,
+      selectedEdge: { a: -1, b: -1 },
+      undirected: false,
       unweighted: true,
     };
 
@@ -84,6 +89,7 @@ class Graph extends Component {
               } else {
                 this.selectNode(e, id);
               }
+              this.setState({ selectedEdge: { a: -1, b: -1 } });
             }}
             className={`Node${id}`}
             id={`Node${id}`}
@@ -186,10 +192,25 @@ class Graph extends Component {
             end={`Node${neighbor.node}`}
             label={!this.state.unweighted ? `${neighbor.weight}` : ""}
             showHead={!this.state.undirected}
-            color="#98ddca"
-            strokeWidth={3}
-            onClick={() => {
-              console.log("EDGE CLICKED");
+            color={edgeColor(
+              this.state.selectedEdge.a === id &&
+                this.state.selectedEdge.b === neighbor.node
+            )}
+            strokeWidth={5}
+            onClick={(e) => {
+              this.setState({
+                selectedId: -1,
+                selectedEdge: { a: id, b: neighbor.node },
+              });
+              e.stopPropagation();
+              this.forceUpdate();
+            }}
+            tabIndex="1"
+            onKeyDown={(e) => {
+              if (e.key === "Backspace" || e.key === "Delete") {
+                this.removeEdge(id, neighbor.node);
+                this.setState({ selectedEdge: { a: -1, b: -1 } });
+              }
             }}
           />
         );
@@ -199,12 +220,19 @@ class Graph extends Component {
     return (
       <div
         onClick={() => {
-          this.setState({ selectedId: -1 });
+          this.setState({ selectedId: -1, selectedEdge: { a: -1, b: -1 } });
         }}
         onDoubleClick={(e) => {
-          if (this.state.selectedId < 0) {
+          if (
+            this.state.selectedId < 0 &&
+            this.state.selectedEdge.a === -1 &&
+            this.state.selectedEdge.b === -1
+          ) {
             this.addNode(e, this.state.nextId);
-            this.setState({ nextId: this.state.nextId + 1 });
+            this.setState({
+              nextId: this.state.nextId + 1,
+              selectedEdge: { a: -1, b: -1 },
+            });
           }
         }}
         className="canvas"

@@ -1,12 +1,14 @@
+/*************** GRAPH / CANVAS ***************/
+
 body {
   background-color: #dddddd;
-}
-
-.App {
-  text-align: center;
-  height: 100vh;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
+}
+
+.app {
+  text-align: center;
+  height: 100vh;
   overflow-y: hidden;
 }
 
@@ -14,7 +16,7 @@ body {
 .toolbar {
   width: 80%;
   position: absolute;
-  left: 10%;
+  left: 2%;
 }
 
 .canvas {
@@ -23,6 +25,8 @@ body {
   margin: 1rem auto;
   height: 75%;
 }
+
+/*************** TOOLBAR ***************/
 
 .toolbar {
   height: 20%;
@@ -44,4 +48,21 @@ body {
 
 .btn {
   margin: 5px;
+}
+
+/*************** RESULTS ***************/
+
+.results {
+  height: 90%;
+  width: 15%;
+  position: absolute;
+  right: 2%;
+  text-align: center;
+}
+
+.output-window {
+  background-color: #000;
+  height: 76%;
+  color: #fff;
+  border-radius: 1rem;
 }
