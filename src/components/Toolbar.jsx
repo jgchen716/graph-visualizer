@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 
-const Toolbar = (props) => {
-  // state for undirected vs directed graph
-  const [selectedType, setSelectedType] = useState("undirected");
-  // state for unweighted vs weighted graph
-  const [selectedWeight, setSelectedWeight] = useState("unweighted");
-
+const Toolbar = ({
+  selectedType,
+  setSelectedType,
+  selectedWeight,
+  setSelectedWeight,
+}) => {
   // disable buttons based on current graph specifications
   const isDisabled = (alg) => {
     if (alg === "bfs" || alg === "dfs" || alg === "dijkstra") {

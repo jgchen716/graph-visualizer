@@ -37,14 +37,38 @@ class Graph extends Component {
       nextId: 0,
       selectedId: 1,
       selectedEdge: { a: -1, b: -1 },
-      undirected: false,
-      unweighted: true,
+      undirected: props.selectedType === "undirected",
+      unweighted: props.selectedWeight === "unweighted",
     };
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.addEdge = this.addEdge.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (
+      (nextProps.selectedType === "undirected") !== this.state.undirected ||
+      (nextProps.selectedWeight === "unweighted") !== this.state.unweighted
+    ) {
+      if (
+        (nextProps.selectedType === "undirected") !== this.state.undirected &&
+        !this.state.undirected
+      ) {
+        this.adjList.forEach((neighbors, id) => {
+          neighbors.forEach(({ node, weight }) => {
+            this.addEdge(node, id, weight);
+          });
+        });
+      }
+      this.setState({
+        undirected: nextProps.selectedType === "undirected",
+        unweighted: nextProps.selectedWeight === "unweighted",
+      });
+      return true;
+    }
+    return false;
   }
 
   getClickCoords = (event) => {
@@ -177,6 +201,7 @@ class Graph extends Component {
 
     // console.log(this.deltaPositions);
     const edges = [];
+    const drawnEdges = [];
     this.adjList.forEach((neighbors, id) => {
       neighbors.forEach((neighbor) => {
         // const x1 = this.deltaPositions.get(id)["x"];
@@ -185,35 +210,42 @@ class Graph extends Component {
         // const y2 = this.deltaPositions.get(neighbor.node)["y"];
 
         // console.log(`(${x1},${y1}) & (${x2},${y2})`);
-
-        edges.push(
-          <Xarrow
-            start={`Node${id}`}
-            end={`Node${neighbor.node}`}
-            label={!this.state.unweighted ? `${neighbor.weight}` : ""}
-            showHead={!this.state.undirected}
-            color={edgeColor(
-              this.state.selectedEdge.a === id &&
-                this.state.selectedEdge.b === neighbor.node
-            )}
-            strokeWidth={5}
-            onClick={(e) => {
-              this.setState({
-                selectedId: -1,
-                selectedEdge: { a: id, b: neighbor.node },
-              });
-              e.stopPropagation();
-              this.forceUpdate();
-            }}
-            tabIndex="1"
-            onKeyDown={(e) => {
-              if (e.key === "Backspace" || e.key === "Delete") {
-                this.removeEdge(id, neighbor.node);
-                this.setState({ selectedEdge: { a: -1, b: -1 } });
-              }
-            }}
-          />
-        );
+        if (
+          !this.state.undirected ||
+          !drawnEdges.some(
+            ({ inNode, outNode }) => inNode === neighbor.node && outNode === id
+          )
+        ) {
+          drawnEdges.push({ inNode: id, outNode: neighbor.node });
+          edges.push(
+            <Xarrow
+              start={`Node${id}`}
+              end={`Node${neighbor.node}`}
+              label={!this.state.unweighted ? `${neighbor.weight}` : ""}
+              showHead={!this.state.undirected}
+              color={edgeColor(
+                this.state.selectedEdge.a === id &&
+                  this.state.selectedEdge.b === neighbor.node
+              )}
+              strokeWidth={5}
+              onClick={(e) => {
+                this.setState({
+                  selectedId: -1,
+                  selectedEdge: { a: id, b: neighbor.node },
+                });
+                e.stopPropagation();
+                this.forceUpdate();
+              }}
+              tabIndex="1"
+              onKeyDown={(e) => {
+                if (e.key === "Backspace" || e.key === "Delete") {
+                  this.removeEdge(id, neighbor.node);
+                  this.setState({ selectedEdge: { a: -1, b: -1 } });
+                }
+              }}
+            />
+          );
+        }
       });
     });
 

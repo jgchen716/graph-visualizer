@@ -16,7 +16,7 @@ body {
 .toolbar {
   width: 80%;
   position: absolute;
-  left: 2%;
+  left: 1.5%;
 }
 
 .canvas {
@@ -54,15 +54,18 @@ body {
 
 .results {
   height: 90%;
-  width: 15%;
+  width: 16%;
   position: absolute;
-  right: 2%;
+  right: 1.5%;
   text-align: center;
+  font-family: "Roboto Mono", monospace;
 }
 
 .output-window {
-  background-color: #000;
-  height: 76%;
+  background-color: #404040;
+  height: 70%;
   color: #fff;
   border-radius: 1rem;
+  text-align: left;
+  padding: 1rem;
 }
