@@ -219,6 +219,7 @@ class Graph extends Component {
           drawnEdges.push({ inNode: id, outNode: neighbor.node });
           edges.push(
             <Xarrow
+              key={`Node${id}-Node${neighbor.node}`}
               start={`Node${id}`}
               end={`Node${neighbor.node}`}
               label={!this.state.unweighted ? `${neighbor.weight}` : ""}
