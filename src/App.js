@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import Graph from "./components/Graph";
 import Toolbar from "./components/Toolbar";
-import Results from "./components/Results";
 
 function App() {
   // state for undirected vs directed graph
@@ -18,7 +17,6 @@ function App() {
         selectedWeight={selectedWeight}
         setSelectedWeight={setSelectedWeight}
       />
-      <Results />
     </div>
   );
 }

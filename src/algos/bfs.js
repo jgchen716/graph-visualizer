@@ -1,4 +1,4 @@
-const bfs = (start, g) => {
+const bfs = (g, start) => {
   const seen = new Set();
   let queue = [start];
   let res = [];

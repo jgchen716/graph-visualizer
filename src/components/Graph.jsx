@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable"; // Both at the same time
 import Xarrow from "react-xarrows";
+import Results from "./Results";
 
 const DIM = 62.5;
 
@@ -25,6 +26,16 @@ const edgeColor = (selected) => {
   return selected ? "#ffd3b4" : "#98ddca";
 };
 
+const initialState = (props) => {
+  return {
+    nextId: 0,
+    selectedId: 1,
+    selectedEdge: { a: -1, b: -1 },
+    undirected: props.selectedType === "undirected",
+    unweighted: props.selectedWeight === "unweighted",
+  };
+};
+
 class Graph extends Component {
   constructor(props) {
     super(props);
@@ -33,13 +44,7 @@ class Graph extends Component {
     this.adjList = new Map();
     this.nodeToElement = new Map();
     this.deltaPositions = new Map();
-    this.state = {
-      nextId: 0,
-      selectedId: 1,
-      selectedEdge: { a: -1, b: -1 },
-      undirected: props.selectedType === "undirected",
-      unweighted: props.selectedWeight === "unweighted",
-    };
+    this.state = initialState(props);
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
@@ -271,7 +276,6 @@ class Graph extends Component {
                     neighbor.node,
                     edgeWeight * 10 + parseInt(e.key)
                   );
-                  console.log(this.adjList);
                   this.forceUpdate();
                 }
               }}
@@ -280,7 +284,6 @@ class Graph extends Component {
         }
       });
     });
-    console.log(this.state);
 
     return (
       <div
@@ -306,6 +309,7 @@ class Graph extends Component {
           {edges}
           {nodes}
         </div>
+        <Results />
       </div>
     );
   }
