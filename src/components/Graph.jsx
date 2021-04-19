@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable"; // Both at the same time
+import Xarrow from "react-xarrows";
 
 const DIM = 62.5;
 
@@ -28,7 +29,12 @@ class Graph extends Component {
     this.adjList = new Map();
     this.nodeToElement = new Map();
     this.deltaPositions = new Map();
-    this.state = { nextId: 0, selectedId: 1 };
+    this.state = {
+      nextId: 0,
+      selectedId: 1,
+      undirected: true,
+      unweighted: true,
+    };
 
     this.getClickCoords = this.getClickCoords.bind(this);
     this.addNode = this.addNode.bind(this);
@@ -61,6 +67,7 @@ class Graph extends Component {
               x: this.deltaPositions.get(id)["x"] + ui.deltaX,
               y: this.deltaPositions.get(id)["y"] + ui.deltaY,
             });
+            this.forceUpdate();
           }}
         >
           <div
@@ -71,17 +78,21 @@ class Graph extends Component {
               }
             }}
             style={circleStyle(this.state.selectedId === id, x, y)}
-            onClick={(e) => this.selectNode(e, id)}
+            onClick={(e) => {
+              if (e.shiftKey) {
+                this.addEdge(this.state.selectedId, id, 1);
+              } else {
+                this.selectNode(e, id);
+              }
+            }}
+            className={`Node${id}`}
+            id={`Node${id}`}
           >
             {id}
           </div>
         </Draggable>
       ));
       this.deltaPositions.set(id, { x: x, y: y });
-
-      if (this.adjList.has(0) && this.adjList.has(1)) {
-        this.addEdge(0, 1, 1);
-      }
 
       this.setState({ selectedId: id });
       this.forceUpdate();
@@ -115,7 +126,14 @@ class Graph extends Component {
         ...this.adjList.get(outNode).filter((obj) => obj.node !== inNode),
         { node: inNode, weight: weight },
       ]);
+      if (this.state.undirected) {
+        this.adjList.set(inNode, [
+          ...this.adjList.get(inNode).filter((obj) => obj.node !== outNode),
+          { node: outNode, weight: weight },
+        ]);
+      }
     }
+    this.forceUpdate();
     return this;
   };
 
@@ -126,7 +144,14 @@ class Graph extends Component {
         outNode,
         this.adjList.get(outNode).filter((obj) => obj.node !== inNode)
       );
+      if (this.state.undirected) {
+        this.adjList.set(
+          inNode,
+          this.adjList.get(inNode).filter((obj) => obj.node !== outNode)
+        );
+      }
     }
+    this.forceUpdate();
     return this;
   };
 
@@ -144,28 +169,29 @@ class Graph extends Component {
       res = it.next();
     }
 
-    console.log(this.deltaPositions);
+    // console.log(this.deltaPositions);
     const edges = [];
     this.adjList.forEach((neighbors, id) => {
       neighbors.forEach((neighbor) => {
-        // console.log(
-        //   this.nodeToElement.get(id).clientX +
-        //     ", " +
-        //     this.nodeToElement.get(id).clientY
-        // );
-        const x1 = this.deltaPositions.get(id)["x"];
-        const y1 = this.deltaPositions.get(id)["y"];
-        const x2 = this.deltaPositions.get(neighbor.node)["x"];
-        const y2 = this.deltaPositions.get(neighbor.node)["y"];
+        // const x1 = this.deltaPositions.get(id)["x"];
+        // const y1 = this.deltaPositions.get(id)["y"];
+        // const x2 = this.deltaPositions.get(neighbor.node)["x"];
+        // const y2 = this.deltaPositions.get(neighbor.node)["y"];
+
+        // console.log(`(${x1},${y1}) & (${x2},${y2})`);
+
         edges.push(
-          <svg
-            width="100%"
-            height="auto"
-            style={{ position: "absolute" }}
-            key={id + "-" + neighbor.node}
-          >
-            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="black" />
-          </svg>
+          <Xarrow
+            start={`Node${id}`}
+            end={`Node${neighbor.node}`}
+            label={!this.state.unweighted ? `${neighbor.weight}` : ""}
+            showHead={!this.state.undirected}
+            color="#98ddca"
+            strokeWidth={3}
+            onClick={() => {
+              console.log("EDGE CLICKED");
+            }}
+          />
         );
       });
     });
@@ -184,7 +210,7 @@ class Graph extends Component {
         className="canvas"
       >
         <div className="graph">
-          {/* {edges} */}
+          {edges}
           {nodes}
         </div>
       </div>

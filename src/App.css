@@ -25,7 +25,6 @@ body {
 }
 
 .toolbar {
-  /* background-color: green; */
   height: 20%;
   bottom: 0;
   margin-top: 2rem;
@@ -41,4 +40,8 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+}
+
+.btn {
+  margin: 5px;
 }

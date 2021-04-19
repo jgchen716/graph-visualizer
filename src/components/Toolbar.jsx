@@ -70,58 +70,79 @@ const Toolbar = (props) => {
     }
   };
 
+  const handleClear = () => {};
+
   return (
     <div className="toolbar">
       <div className="button-group">
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "bfs")}
-          disabled={isDisabled("bfs")}
-        >
-          BFS
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "dfs")}
-          disabled={isDisabled("dfs")}
-        >
-          DFS
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "dijkstra")}
-          disabled={isDisabled("dijkstra")}
-        >
-          Dijkstra
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "topo sort")}
-          disabled={isDisabled("topo sort")}
-        >
-          Topo Sort
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "clustering")}
-          disabled={isDisabled("clustering")}
-        >
-          Clustering Coefficient
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "bridges")}
-          disabled={isDisabled("bridges")}
-        >
-          Bridges
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={(e) => handleClick(e, "triadic")}
-          disabled={isDisabled("triadic")}
-        >
-          Triadic Closure
-        </Button>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "bfs")}
+            disabled={isDisabled("bfs")}
+          >
+            BFS
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "dfs")}
+            disabled={isDisabled("dfs")}
+          >
+            DFS
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "dijkstra")}
+            disabled={isDisabled("dijkstra")}
+          >
+            Dijkstra
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "topo sort")}
+            disabled={isDisabled("topo sort")}
+          >
+            Topo Sort
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "clustering")}
+            disabled={isDisabled("clustering")}
+          >
+            Clustering Coefficient
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "bridges")}
+            disabled={isDisabled("bridges")}
+          >
+            Bridges
+          </Button>
+        </div>
+        <div className="btn">
+          <Button
+            variant="outlined"
+            onClick={(e) => handleClick(e, "triadic")}
+            disabled={isDisabled("triadic")}
+          >
+            Triadic Closure
+          </Button>
+        </div>
+        <div className="btn">
+          <Button variant="contained" color="secondary" onClick={handleClear}>
+            CLEAR
+          </Button>
+        </div>
       </div>
       <FormControl component="fieldset">
         <RadioGroup
