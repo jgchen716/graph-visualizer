@@ -1,33 +1,45 @@
-// Tarjan's algorithm (full DFS traversal)
+// Tarjan's algorithm (full recursive DFS traversal)
 const topoSort = (g) => {
-	// stack for iterative DFS
-	const stack = [];
 	// stack of nodes to return in order of decreasing finish timed
 	const finished = [];
-	// set of discovered nodes
-	const discovered = new Set();
+	// map of node to color (0 is undiscovered, 1 is discovered, 2 is finished)
+	const color = new Map();
+
+	// initialize color of each node to 0
+	g.adjList.forEach((values, node) => {
+		color.set(node, 0);
+	});
 
 	g.adjList.forEach((values, node) => {
-		if (!discovered.has(node)) {
-			stack.push(node);
-
-			while (stack.length !== 0) {
-				const curr = stack.pop();
-				const outneighbors = g.adjList.get(curr);
-
-				discovered.add(curr);
-				outneighbors.forEach(({ neighbor, weight }) => {
-					if (!discovered.has(neighbor)) {
-						stack.push(neighbor);
-					}
-				});
-			}
-
-			finished.push(node);
+		// if undiscovered, visit node
+		if (color.get(node) !== 0) {
+			dfsVisit(g, node, color, finished);
 		}
 	});
 	// return nodes in decreasing order of finish times
 	return finished;
 };
+
+// DFS helper method
+function dfsVisit(g, node, color, finished) {
+	color.set(node, 1);
+	// iterate through neighbors
+	const neighbors = g.adjList.get(node);
+	neighbors.forEach((v, weight) => {
+		// found back edge, which implies cycle exists so no valid topo sort
+		if (color.get(v) === 1) {
+			console.log("No valid topo sort, graph cannot have cycle");
+			return [];
+		}
+
+		if (color.get(v) !== 0) {
+			dfsVisit(g, v, color, finished);
+		}
+	});
+
+	// update color and finished stack since node is finished
+	color.set(node, 2);
+	finished.push(node);
+}
 
 export default topoSort;
