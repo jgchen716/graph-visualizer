@@ -11,15 +11,8 @@ import dijkstra from "../algos/dijkstra";
 import topoSort from "../algos/topoSort";
 import triadicClosure from "../algos/triadicClosure";
 
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-
 // dimensions for nodes
 const DIM = 62.5;
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 // styles for drawing nodes
 const circleStyle = (selected, x, y) => {
@@ -61,8 +54,6 @@ const initialState = (props) => {
   };
 };
 
-const ALGOS_NEED_SELECTED_NODE = ["bfs", "dfs", "dijkstra"];
-
 class Graph extends Component {
   constructor(props) {
     super(props);
@@ -76,18 +67,6 @@ class Graph extends Component {
     this.addNode = this.addNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.addEdge = this.addEdge.bind(this);
-  }
-
-  handleClick() {
-    this.setState({ open: true });
-  }
-
-  handleClose(e, reason) {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ open: false });
   }
 
   // TODO (not as important since this doesn't affect performance too much - and not visible from normal usage): fix bug where this gets called multiple times
@@ -443,20 +422,6 @@ class Graph extends Component {
           {nodes}
         </div>
         <Results result={this.state.results} algorithm={this.state.algorithm} />
-        {ALGOS_NEED_SELECTED_NODE.includes(this.state.algorithm) &&
-          this.state.selectedId < 0 && (
-            <div className="root">
-              <Snackbar
-                open={this.state.open}
-                autoHideDuration={5000}
-                onClose={this.handleClose}
-              >
-                <Alert onClose={this.handleClose} severity="warning">
-                  Please select a source node!
-                </Alert>
-              </Snackbar>
-            </div>
-          )}
       </div>
     );
   }
