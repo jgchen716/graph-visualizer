@@ -12,7 +12,7 @@ const topoSort = (g) => {
 
 	g.adjList.forEach((values, node) => {
 		// if undiscovered, visit node
-		if (color.get(node) !== 0) {
+		if (color.get(node) === 0) {
 			dfsVisit(g, node, color, finished);
 		}
 	});
@@ -25,14 +25,15 @@ function dfsVisit(g, node, color, finished) {
 	color.set(node, 1);
 	// iterate through neighbors
 	const neighbors = g.adjList.get(node);
-	neighbors.forEach((v, weight) => {
+	neighbors.forEach(({ node: v, weight }) => {
 		// found back edge, which implies cycle exists so no valid topo sort
 		if (color.get(v) === 1) {
 			console.log("No valid topo sort, graph cannot have cycle");
+			// return empty stack when no valid topo sort
 			return [];
 		}
 
-		if (color.get(v) !== 0) {
+		if (color.get(v) === 0) {
 			dfsVisit(g, v, color, finished);
 		}
 	});

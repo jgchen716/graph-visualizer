@@ -33,7 +33,7 @@ function dfsVisit(g, time, u, visited, discovered, low, parent, bridges) {
 
 	// iterate through neighbors
 	const neighbors = g.adjList.get(u);
-	neighbors.forEach((v, weight) => {
+	neighbors.forEach(({ node: v, weight }) => {
 		if (!visited.has(v)) {
 			parent[v] = u;
 			dfsVisit(g, time, v, visited, discovered, low, parent, bridges);
