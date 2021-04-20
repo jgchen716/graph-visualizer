@@ -424,7 +424,6 @@ class Graph extends Component {
 					this.setState({
 						selectedId: -1,
 						selectedEdge: { a: -1, b: -1 },
-						//
 					});
 					this.forceUpdate();
 				}}
