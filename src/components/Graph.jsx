@@ -274,6 +274,20 @@ class Graph extends Component {
 					{ node: outNode, weight: weight },
 				]);
 			}
+			this.setState(
+				{
+					changed: true,
+					selectedId: inNode,
+				},
+				() => {
+					this.shouldComponentUpdate({
+						cleared: this.state.cleared,
+						selectedType: this.state.undirected ? "undirected" : "directed",
+						selectedWeight: this.state.unweighted ? "unweighted" : "weighted",
+						selectedAlgorithm: this.state.algorithm,
+					});
+				}
+			);
 		}
 		this.forceUpdate();
 		return this;
