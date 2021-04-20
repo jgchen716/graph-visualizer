@@ -14,7 +14,7 @@ const topoSort = (g) => {
   g.adjList.forEach((values, node) => {
     // if undiscovered, visit node
     if (color.get(node) === 0) {
-      if (dfsVisit(g, node, color, finished)) {
+      if (!dfsVisit(g, node, color, finished)) {
         valid = false;
       }
     }
@@ -37,7 +37,9 @@ function dfsVisit(g, node, color, finished) {
     }
 
     if (color.get(v) === 0) {
-      dfsVisit(g, v, color, finished);
+      if (!dfsVisit(g, v, color, finished)) {
+        valid = false;
+      }
     }
   });
 

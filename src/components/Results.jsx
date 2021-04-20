@@ -130,7 +130,6 @@ const resultsToText = (result, algorithm) => {
       return "Global Bridges";
     case "triadic":
       let triadicString = [];
-      console.log(result);
       if (result.size === 0) {
         triadicString.push(
           <div>
