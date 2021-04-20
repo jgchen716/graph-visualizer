@@ -14,12 +14,14 @@ import triadicClosure from "../algos/triadicClosure";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
+// dimensions for nodes
 const DIM = 62.5;
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+// styles for drawing nodes
 const circleStyle = (selected, x, y) => {
 	return {
 		padding: 0,
@@ -37,10 +39,12 @@ const circleStyle = (selected, x, y) => {
 	};
 };
 
+// toggles color of edges if selected
 const edgeColor = (selected) => {
 	return selected ? "#ffd3b4" : "#98ddca";
 };
 
+// initial state for graph canvas
 const initialState = (props) => {
 	return {
 		nextId: 0,
@@ -61,11 +65,11 @@ const ALGOS_NEED_SELECTED_NODE = ["bfs", "dfs", "dijkstra"];
 class Graph extends Component {
 	constructor(props) {
 		super(props);
-		// Map<Number, Object{Number, Number}[]>
-		// Map<Node, Object{Node, Edge Weight}[]>
+		// maps node to object with node as key and edge weight as value
 		this.adjList = new Map();
 		this.nodeToElement = new Map();
 		this.deltaPositions = new Map();
+		// set initial state
 		this.state = initialState(props);
 
 		this.getClickCoords = this.getClickCoords.bind(this);
