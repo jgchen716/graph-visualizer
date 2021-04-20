@@ -30,6 +30,9 @@ const Toolbar = ({
 			The default edge weight is 1. To change an edge weight, first press{" "}
 			<code>enter</code> to set the edge weight to 0. Then, type in any number
 			to append the digits to the edge weight.
+			<br />
+			Also, note that for some algorithms (BFS, DFS, and Dijkstra), a node must
+			be selected in order to run the algorithm.
 		</>
 	);
 
