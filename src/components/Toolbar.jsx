@@ -10,6 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+// bottom toolbar for running algorithms, clearing graph, and viewing instructions
 const Toolbar = ({
 	selectedType,
 	setSelectedType,
@@ -35,10 +36,12 @@ const Toolbar = ({
 	// state for dialog box for instructions
 	const [open, setOpen] = useState(false);
 
+	// open dialog
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 
+	// close dialog
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -72,6 +75,7 @@ const Toolbar = ({
 		}
 	};
 
+	// render toolbar
 	return (
 		<div className="toolbar">
 			<div className="button-group">
