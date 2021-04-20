@@ -32,7 +32,6 @@ function dfsVisit(g, node, color, finished) {
   neighbors.forEach(({ node: v, weight }) => {
     // found back edge, which implies cycle exists so no valid topo sort
     if (color.get(v) === 1) {
-      console.log("No valid topo sort, graph cannot have cycle");
       // return empty stack when no valid topo sort
       valid = false;
     }

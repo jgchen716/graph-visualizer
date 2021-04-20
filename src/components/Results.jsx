@@ -80,7 +80,6 @@ const resultsToText = (result, algorithm) => {
       );
     case "topo sort":
       let topoString = [];
-      console.log(result);
       if (!result.valid) {
         topoString.push("No valid topo sort, graph cannot have cycle.");
       } else {
@@ -131,21 +130,36 @@ const resultsToText = (result, algorithm) => {
       return "Global Bridges";
     case "triadic":
       let triadicString = [];
-      result.forEach(({ NodeA, NodeB }) => {
+      console.log(result);
+      if (result.size === 0) {
         triadicString.push(
-          <div key={`Node${NodeA} -> Node${NodeB}`}>
-            - Node{NodeA} {"->"} Node{NodeB}
+          <div>
+            No new edges would be formed due to Triadic Closure.
             <br />
           </div>
         );
-      });
+      } else {
+        triadicString.push(
+          <div>
+            New Edges Formed due to Triadic Closure:
+            <br />
+          </div>
+        );
+        result.forEach(({ NodeA, NodeB }) => {
+          triadicString.push(
+            <div key={`Node${NodeA} -> Node${NodeB}`}>
+              - Node{NodeA} {"->"} Node{NodeB}
+              <br />
+            </div>
+          );
+        });
+      }
+
       return (
         <>
           Triadic Closure
           <br />
           {separator}
-          <br />
-          New Edges Formed due to Triadic Closure:
           <br />
           {triadicString}
         </>

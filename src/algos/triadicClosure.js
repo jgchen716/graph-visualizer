@@ -7,7 +7,14 @@ const triadicClosure = (g) => {
 
   g.adjList.forEach((neighborsA, nodeA) => {
     g.adjList.forEach((neighborsB, nodeB) => {
-      if (nodeA !== nodeB && shareNeighbor(g, neighborsA, neighborsB)) {
+      if (
+        nodeA !== nodeB &&
+        shareNeighbor(neighborsA, neighborsB) &&
+        !includesNode(
+          neighborsA,
+          nodeB
+        ) /* nodeA's neighbors does not include nodeB */
+      ) {
         res.add({ NodeA: nodeA, NodeB: nodeB });
       }
     });
@@ -15,7 +22,17 @@ const triadicClosure = (g) => {
   return res;
 };
 
-const shareNeighbor = (g, neighborsA, neighborsB) => {
+const includesNode = (neighborsA, nodeB) => {
+  var included = false;
+  neighborsA.forEach(({ node: nodeA, weight }) => {
+    if (nodeA === nodeB) {
+      included = true;
+    }
+  });
+  return included;
+};
+
+const shareNeighbor = (neighborsA, neighborsB) => {
   var shared = false;
   neighborsA.forEach((neighborA) => {
     if (neighborsB.some((neighborB) => neighborA.node === neighborB.node)) {
