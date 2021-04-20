@@ -93,7 +93,7 @@ const Toolbar = ({
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="primary" autoFocus>
-                Close
+                Cancel
               </Button>
             </DialogActions>
           </Dialog>

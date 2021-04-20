@@ -13,6 +13,7 @@ const resultsToText = (result, algorithm) => {
     case "bfs":
       let bfsString = [];
       var frontierCount = 0;
+      bfsString.push(`Source Node: Node${result[0][0]}`);
       result.forEach((frontier) => {
         frontier = frontier.sort(function (a, b) {
           return a - b;
@@ -195,6 +196,11 @@ const resultsToText = (result, algorithm) => {
 };
 
 const Results = ({ result, algorithm }) => {
+  console.log(
+    `cond1: ${result === undefined}   cond2: ${
+      algorithm === undefined
+    }    cond3: ${algorithm === ""}`
+  );
   const emptyCondition =
     result === undefined || algorithm === undefined || algorithm === "";
   return emptyCondition ? (

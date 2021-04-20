@@ -52,7 +52,7 @@ const initialState = (props) => {
     cleared: props.cleared,
     results: props.result ? props.result : "",
     open: false,
-    changed: true,
+
     // classes: useStyles(),
   };
 };
@@ -126,6 +126,7 @@ class Graph extends Component {
       this.state.algorithm !== nextProps.selectedAlgorithm ||
       this.state.changed
     ) {
+      console.log(nextProps.selectedAlgorithm);
       let result;
       switch (nextProps.selectedAlgorithm) {
         case "bfs":
@@ -213,7 +214,6 @@ class Graph extends Component {
               if (e.key === "Backspace" || e.key === "Delete") {
                 this.removeNode(id);
               }
-              this.setState({ changed: true });
             }}
             style={circleStyle(this.state.selectedId === id, x, y)}
             onClick={(e) => {
@@ -221,8 +221,11 @@ class Graph extends Component {
                 this.addEdge(this.state.selectedId, id, 1);
               } else {
                 this.selectNode(e, id);
+                this.setState({
+                  selectedEdge: { a: -1, b: -1 },
+                });
               }
-              this.setState({ selectedEdge: { a: -1, b: -1 }, changed: true });
+              this.forceUpdate();
             }}
             className={`Node${id}`}
             id={`Node${id}`}
@@ -233,7 +236,7 @@ class Graph extends Component {
       ));
       this.deltaPositions.set(id, { x: x, y: y });
 
-      this.setState({ selectedId: id, changed: true });
+      this.setState({ selectedId: id });
       this.forceUpdate();
     }
     return this;
@@ -253,7 +256,6 @@ class Graph extends Component {
       this.adjList.delete(id);
       this.nodeToElement.delete(id);
       this.deltaPositions.delete(id);
-      this.setState({ changed: true });
     });
     this.forceUpdate();
     return this;
@@ -272,7 +274,6 @@ class Graph extends Component {
           { node: outNode, weight: weight },
         ]);
       }
-      this.setState({ changed: true });
     }
     this.forceUpdate();
     return this;
@@ -291,7 +292,6 @@ class Graph extends Component {
           this.adjList.get(inNode).filter((obj) => obj.node !== outNode)
         );
       }
-      this.setState({ changed: true });
     }
     this.forceUpdate();
     return this;
@@ -299,6 +299,14 @@ class Graph extends Component {
 
   selectNode = (e, id) => {
     this.setState({ selectedId: id, changed: true });
+    console.log(this.state.changed);
+    this.shouldComponentUpdate({
+      cleared: this.state.cleared,
+      selectedType: this.state.undirected ? "undirected" : "directed",
+      selectedWeight: this.state.unweighted ? "unweighted" : "weighted",
+      selectedAlgorithm: this.state.algorithm,
+    });
+    this.forceUpdate();
     e.stopPropagation();
   };
 
@@ -310,7 +318,7 @@ class Graph extends Component {
       nodes.push(res.value());
       res = it.next();
     }
-
+    console.log(this.state.selectedId);
     const edges = [];
     const drawnEdges = [];
     this.adjList.forEach((neighbors, id) => {
@@ -354,12 +362,10 @@ class Graph extends Component {
                   this.removeEdge(id, neighbor.node);
                   this.setState({
                     selectedEdge: { a: -1, b: -1 },
-                    changed: true,
                   });
                 } else if (e.key === "Enter") {
                   this.removeEdge(id, neighbor.node);
                   this.addEdge(id, neighbor.node, 0);
-                  this.setState({ changed: true });
                 } else if (
                   e.key === "0" ||
                   e.key === "1" ||
@@ -386,7 +392,7 @@ class Graph extends Component {
                     neighbor.node,
                     edgeWeight * 10 + parseInt(e.key)
                   );
-                  this.setState({ changed: true });
+
                   this.forceUpdate();
                 }
               }}
@@ -402,7 +408,7 @@ class Graph extends Component {
           this.setState({
             selectedId: -1,
             selectedEdge: { a: -1, b: -1 },
-            changed: true,
+            //
           });
           this.forceUpdate();
         }}
@@ -416,7 +422,6 @@ class Graph extends Component {
             this.setState({
               nextId: this.state.nextId + 1,
               selectedEdge: { a: -1, b: -1 },
-              changed: true,
             });
             this.forceUpdate();
           }
