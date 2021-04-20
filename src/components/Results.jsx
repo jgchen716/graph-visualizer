@@ -127,7 +127,34 @@ const resultsToText = (result, algorithm) => {
         </>
       );
     case "bridges":
-      return "Global Bridges";
+      let bridgesString = [];
+      if (result.size === 0) {
+        bridgesString.push("No global bridges found.");
+      } else {
+        bridgesString.push(
+          <div>
+            Global Bridges:
+            <br />
+          </div>
+        );
+        result.forEach(({ node1, node2 }) => {
+          bridgesString.push(
+            <div key={`Node${node1} -> Node${node2}`}>
+              - Node{node1} {"<->"} Node{node2}
+              <br />
+            </div>
+          );
+        });
+      }
+      return (
+        <>
+          Global Bridges
+          <br />
+          {separator}
+          <br />
+          {bridgesString}
+        </>
+      );
     case "triadic":
       let triadicString = [];
       if (result.size === 0) {
@@ -153,7 +180,6 @@ const resultsToText = (result, algorithm) => {
           );
         });
       }
-
       return (
         <>
           Triadic Closure
