@@ -149,6 +149,7 @@ class Graph extends Component {
         default:
           break;
       }
+      // update state based on current algorithm and result
       this.setState({
         results: result,
         algorithm: nextProps.selectedAlgorithm,
@@ -160,6 +161,7 @@ class Graph extends Component {
     return updated;
   }
 
+  // get mouse click coordinates
   getClickCoords = (event) => {
     // from: https://stackoverflow.com/a/29296049/14198287
     var e = event.target;
