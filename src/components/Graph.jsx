@@ -393,6 +393,33 @@ class Graph extends Component {
       });
     });
 
+    const dottedEdges = [];
+    const drawnDottedEdges = [];
+    if (this.state.algorithm === "triadic") {
+      this.state.results.forEach(({ NodeA, NodeB }) => {
+        if (
+          !this.state.undirected ||
+          !drawnDottedEdges.some(
+            ({ inNode, outNode }) => inNode === NodeB && outNode === NodeA
+          )
+        ) {
+          drawnDottedEdges.push({ inNode: NodeA, outNode: NodeB });
+          dottedEdges.push(
+            <Xarrow
+              key={`Node${NodeA}-Node${NodeB}`}
+              start={`Node${NodeA}`}
+              end={`Node${NodeB}`}
+              label={""}
+              showHead={!this.state.undirected}
+              color={"#98ddca"}
+              strokeWidth={5}
+              dashness={{ strokeLen: 10, nonStrokeLen: 10 }}
+            />
+          );
+        }
+      });
+    }
+
     return (
       <div
         onClick={() => {
@@ -420,6 +447,7 @@ class Graph extends Component {
         className="canvas"
       >
         <div className="graph">
+          {dottedEdges}
           {edges}
           {nodes}
         </div>
