@@ -3,30 +3,27 @@
 // Note: if edge forms between NodeA and NodeB, output set will contain
 // {NodeA, NodeB} and {NodeB, NodeA}
 const triadicClosure = (g) => {
-	const res = new Set();
+  const res = new Set();
 
-	console.log(g);
-	console.log(g.adjList.keys());
-	g.adjList.keys().forEach((nodeA) => {
-		g.adjList.keys().forEach((nodeB) => {
-			if (nodeA !== nodeB && shareNeighbor(g, nodeA, nodeB)) {
-				res.add({ NodeA: nodeA, NodeB: nodeB });
-			}
-		});
-	});
+  //   console.log(g);
+  g.adjList.forEach((neighborsA, nodeA) => {
+    g.adjList.forEach((neighborsB, nodeB) => {
+      if (nodeA !== nodeB && shareNeighbor(g, neighborsA, neighborsB)) {
+        res.add({ NodeA: nodeA, NodeB: nodeB });
+      }
+    });
+  });
 
-	return res;
+  return res;
 };
 
-const shareNeighbor = (g, nodeA, nodeB) => {
-	const neighborsA = g.adjList.get(nodeA);
-	const neighborsB = g.adjList.get(nodeB);
-	neighborsA.forEach((neighborA) => {
-		if (neighborsB.includes(neighborA)) {
-			return true;
-		}
-	});
-	return false;
+const shareNeighbor = (g, neighborsA, neighborsB) => {
+  neighborsA.forEach((neighborA) => {
+    if (neighborsB.includes(neighborA)) {
+      return true;
+    }
+  });
+  return false;
 };
 
 export default triadicClosure;
