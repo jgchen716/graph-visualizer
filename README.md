@@ -1,70 +1,23 @@
-# Getting Started with Create React App
+# Read Me
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Application
 
-## Available Scripts
+This project can be found [here]().
 
-In the project directory, you can run:
+## Overview
+This project is a graph visualizer built in React and bootstrapped with [Create React App](https://github.com/facebook/create-react-app) that allows users to add nodes and edges to a canvas and then perform a number of algorithms on the graph they've created.
 
-### `npm start`
+The algorithms include traditional graph algorithms like BFS, DFS, and Dijkstra's shortest path algorithm, but also allow users to analyze some properties defined in social networks such as calculate the clustering coefficient for a given node and analyze what edges would be added based on triadic closure.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Once run, the results of each algorithm are displayed in a "results" pane on the right side of the screen. The written output varies for each algorithm—for example, running BFS from a given node will display each of the layers/frontiers of the BFS traversal.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The goal of this project is to allow users to visually analyze and thus understand various properties of graphs and social networks.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How to Use the Project
 
-### `npm run build`
+To add nodes, double click on the canvas. To select a node, single click on a node. To add edges, a node must be selected. Once a starting node is selected, holding shift while single clicking on another node creates an edge between these two nodes. Edge weights can be change by first selecting the edge, hitting `enter` to reset the edge weight to 0, and then typing in digits that correspond to the edge weight.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contributors
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was created and is maintained by [Jonathan Chen](https://github.com/jgchen716) and [Jeffrey Xiao](https://github.com/jxiao).
