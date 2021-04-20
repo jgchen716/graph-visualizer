@@ -118,7 +118,6 @@ class Graph extends Component {
         case "dijkstra":
           // run dijkstra
           if (this.state.selectedId >= 0) {
-            console.log("running dijkstra");
             result = dijkstra(this, this.state.selectedId);
           }
           break;

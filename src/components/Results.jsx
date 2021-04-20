@@ -21,10 +21,10 @@ const resultsToText = (result, algorithm) => {
         frontier.forEach((node) => (currString += `Node${node}, `));
         currString = currString.slice(0, currString.lastIndexOf(",")); // slice off last ", "
         bfsString.push(
-          <>
+          <div key={frontierCount}>
             - {currString}
             <br />
-          </>
+          </div>
         );
       });
       return (
@@ -40,10 +40,10 @@ const resultsToText = (result, algorithm) => {
       let dfsString = [];
       result.forEach((node) =>
         dfsString.push(
-          <>
+          <div key={node}>
             - Node{node}
             <br />
-          </>
+          </div>
         )
       );
       return (
@@ -61,10 +61,10 @@ const resultsToText = (result, algorithm) => {
       let dijkstraString = [];
       result.forEach(({ node, distance }) => {
         dijkstraString.push(
-          <>
+          <div key={`Node${node}: ${distance} units`}>
             - Node{node}: {distance} units
             <br />
-          </>
+          </div>
         );
       });
       return (
@@ -85,7 +85,26 @@ const resultsToText = (result, algorithm) => {
     case "bridges":
       return "Global Bridges";
     case "triadic":
-      return "Triadic Closure";
+      let triadicString = [];
+      result.forEach(({ NodeA, NodeB }) => {
+        triadicString.push(
+          <div key={`Node${NodeA} -> Node${NodeB}`}>
+            - Node{NodeA} {"->"} Node{NodeB}
+            <br />
+          </div>
+        );
+      });
+      return (
+        <>
+          Triadic Closure
+          <br />
+          {separator}
+          <br />
+          New Edges Formed due to Triadic Closure:
+          <br />
+          {triadicString}
+        </>
+      );
     default:
       return "";
   }
@@ -93,7 +112,6 @@ const resultsToText = (result, algorithm) => {
 
 const Results = ({ result, algorithm }) => {
   // TODO: UPDATE TEXT
-  console.log(result);
   const emptyCondition =
     result === undefined || algorithm === undefined || algorithm === "";
   return emptyCondition ? (
