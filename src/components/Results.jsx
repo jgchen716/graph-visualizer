@@ -79,9 +79,36 @@ const resultsToText = (result, algorithm) => {
         </>
       );
     case "topo sort":
-      return "Topological Sort";
+      let topoString = [];
+      console.log(result);
+      if (!result.valid) {
+        topoString.push("No valid topo sort, graph cannot have cycle.");
+      } else {
+        topoString.push(
+          <>
+            One potential ordering:
+            <br />
+          </>
+        );
+        result.res.forEach((node) => {
+          topoString.push(
+            <div key={node}>
+              - Node{node}
+              <br />
+            </div>
+          );
+        });
+      }
+      return (
+        <>
+          Topological Sort
+          <br />
+          {separator}
+          <br />
+          {topoString}
+        </>
+      );
     case "clustering":
-      // TODO: works for 1 node
       let clusteringString = [];
       result.forEach(({ node, cc }) => {
         clusteringString.push(
