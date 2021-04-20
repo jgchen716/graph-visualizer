@@ -195,7 +195,6 @@ const resultsToText = (result, algorithm) => {
 };
 
 const Results = ({ result, algorithm }) => {
-  // TODO: UPDATE TEXT
   const emptyCondition =
     result === undefined || algorithm === undefined || algorithm === "";
   return emptyCondition ? (

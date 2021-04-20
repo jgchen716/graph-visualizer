@@ -52,6 +52,7 @@ const initialState = (props) => {
     cleared: props.cleared,
     results: props.result ? props.result : "",
     open: false,
+    changed: true,
     // classes: useStyles(),
   };
 };
@@ -121,9 +122,10 @@ class Graph extends Component {
     }
 
     // condition to run algorithm
-    if (this.state.algorithm !== nextProps.selectedAlgorithm) {
-      // TODO: run algo and update results
-      // TODO: handle cases where node is not selected (display tooltip to select node)
+    if (
+      this.state.algorithm !== nextProps.selectedAlgorithm ||
+      this.state.changed
+    ) {
       let result;
       switch (nextProps.selectedAlgorithm) {
         case "bfs":
@@ -169,7 +171,9 @@ class Graph extends Component {
       this.setState({
         results: result,
         algorithm: nextProps.selectedAlgorithm,
+        changed: false,
       });
+      this.forceUpdate();
       updated = true;
     }
     return updated;
@@ -209,6 +213,7 @@ class Graph extends Component {
               if (e.key === "Backspace" || e.key === "Delete") {
                 this.removeNode(id);
               }
+              this.setState({ changed: true });
             }}
             style={circleStyle(this.state.selectedId === id, x, y)}
             onClick={(e) => {
@@ -217,7 +222,7 @@ class Graph extends Component {
               } else {
                 this.selectNode(e, id);
               }
-              this.setState({ selectedEdge: { a: -1, b: -1 } });
+              this.setState({ selectedEdge: { a: -1, b: -1 }, changed: true });
             }}
             className={`Node${id}`}
             id={`Node${id}`}
@@ -228,7 +233,7 @@ class Graph extends Component {
       ));
       this.deltaPositions.set(id, { x: x, y: y });
 
-      this.setState({ selectedId: id });
+      this.setState({ selectedId: id, changed: true });
       this.forceUpdate();
     }
     return this;
@@ -248,6 +253,7 @@ class Graph extends Component {
       this.adjList.delete(id);
       this.nodeToElement.delete(id);
       this.deltaPositions.delete(id);
+      this.setState({ changed: true });
     });
     this.forceUpdate();
     return this;
@@ -266,6 +272,7 @@ class Graph extends Component {
           { node: outNode, weight: weight },
         ]);
       }
+      this.setState({ changed: true });
     }
     this.forceUpdate();
     return this;
@@ -284,13 +291,14 @@ class Graph extends Component {
           this.adjList.get(inNode).filter((obj) => obj.node !== outNode)
         );
       }
+      this.setState({ changed: true });
     }
     this.forceUpdate();
     return this;
   };
 
   selectNode = (e, id) => {
-    this.setState({ selectedId: id });
+    this.setState({ selectedId: id, changed: true });
     e.stopPropagation();
   };
 
@@ -344,10 +352,14 @@ class Graph extends Component {
               onKeyDown={(e) => {
                 if (e.key === "Backspace" || e.key === "Delete") {
                   this.removeEdge(id, neighbor.node);
-                  this.setState({ selectedEdge: { a: -1, b: -1 } });
+                  this.setState({
+                    selectedEdge: { a: -1, b: -1 },
+                    changed: true,
+                  });
                 } else if (e.key === "Enter") {
                   this.removeEdge(id, neighbor.node);
                   this.addEdge(id, neighbor.node, 0);
+                  this.setState({ changed: true });
                 } else if (
                   e.key === "0" ||
                   e.key === "1" ||
@@ -374,6 +386,7 @@ class Graph extends Component {
                     neighbor.node,
                     edgeWeight * 10 + parseInt(e.key)
                   );
+                  this.setState({ changed: true });
                   this.forceUpdate();
                 }
               }}
@@ -386,7 +399,11 @@ class Graph extends Component {
     return (
       <div
         onClick={() => {
-          this.setState({ selectedId: -1, selectedEdge: { a: -1, b: -1 } });
+          this.setState({
+            selectedId: -1,
+            selectedEdge: { a: -1, b: -1 },
+            changed: true,
+          });
           this.forceUpdate();
         }}
         onDoubleClick={(e) => {
@@ -399,6 +416,7 @@ class Graph extends Component {
             this.setState({
               nextId: this.state.nextId + 1,
               selectedEdge: { a: -1, b: -1 },
+              changed: true,
             });
             this.forceUpdate();
           }
