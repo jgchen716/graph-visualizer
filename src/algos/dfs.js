@@ -1,6 +1,6 @@
 // start - node to start DFS from
 // only visits nodes reachable from start (NOT full traversal)
-const dfs = (start, g) => {
+const dfs = (g, start) => {
 	// stack for iterative DFS
 	const stack = [];
 	// array of nodes to return

@@ -1,6 +1,6 @@
 // INVARIANT: only works for UNDIRECTED graph
 // calculates clustering coefficient for given node
-const clusteringCoefficient = (node, g) => {
+const clusteringCoefficient = (g, node) => {
 	const neighbors = g.adjList.get(node);
 	const numNeighbors = neighbors.length;
 	// calculates total possible nummber of pairs, i.e. n choose 2

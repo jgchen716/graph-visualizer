@@ -10,6 +10,9 @@ const Toolbar = ({
 	setSelectedType,
 	selectedWeight,
 	setSelectedWeight,
+	setSelectedAlgorithm,
+	setCleared,
+	cleared,
 }) => {
 	// disable buttons based on current graph specifications
 	const isDisabled = (alg) => {
@@ -40,46 +43,13 @@ const Toolbar = ({
 		}
 	};
 
-	// run algorithm based on button click
-	const handleClick = (e, alg) => {
-		switch (alg) {
-			case "bfs":
-				// run bfs
-				break;
-			case "dfs":
-				// run dfs
-				break;
-			case "dijkstra":
-				// run dijkstra
-				break;
-			case "topo sort":
-				// run topo sort
-				break;
-			case "clustering":
-				// run clustering
-				break;
-			case "bridges":
-				// run bridges
-				break;
-			case "triadic":
-				// run triadic
-				break;
-			default:
-				console.log("Invalid algorithm");
-				break;
-		}
-	};
-
-	// clear graph AND results panel??
-	const handleClear = () => {};
-
 	return (
 		<div className="toolbar">
 			<div className="button-group">
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "bfs")}
+						onClick={() => setSelectedAlgorithm("bfs")}
 						disabled={isDisabled("bfs")}
 					>
 						BFS
@@ -88,7 +58,7 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "dfs")}
+						onClick={(e) => setSelectedAlgorithm("dfs")}
 						disabled={isDisabled("dfs")}
 					>
 						DFS
@@ -97,7 +67,7 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "dijkstra")}
+						onClick={(e) => setSelectedAlgorithm("dijkstra")}
 						disabled={isDisabled("dijkstra")}
 					>
 						Dijkstra
@@ -106,7 +76,7 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "topo sort")}
+						onClick={(e) => setSelectedAlgorithm("topo sort")}
 						disabled={isDisabled("topo sort")}
 					>
 						Topo Sort
@@ -115,7 +85,7 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "clustering")}
+						onClick={(e) => setSelectedAlgorithm("clustering")}
 						disabled={isDisabled("clustering")}
 					>
 						Clustering Coefficient
@@ -124,7 +94,7 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "bridges")}
+						onClick={(e) => setSelectedAlgorithm("bridges")}
 						disabled={isDisabled("bridges")}
 					>
 						Bridges
@@ -133,14 +103,18 @@ const Toolbar = ({
 				<div className="btn">
 					<Button
 						variant="outlined"
-						onClick={(e) => handleClick(e, "triadic")}
+						onClick={(e) => setSelectedAlgorithm("triadic")}
 						disabled={isDisabled("triadic")}
 					>
 						Triadic Closure
 					</Button>
 				</div>
 				<div className="btn">
-					<Button variant="contained" color="secondary" onClick={handleClear}>
+					<Button
+						variant="contained"
+						color="secondary"
+						onClick={() => setCleared(!cleared)}
+					>
 						CLEAR
 					</Button>
 				</div>
