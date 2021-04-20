@@ -17,7 +17,7 @@ const dijkstra = (g, start) => {
       }
     });
     if (minNode >= 0) {
-      res.push(minNode);
+      res.push({ node: minNode, distance: minDist });
       distances.delete(minNode);
       g.adjList.get(minNode).forEach(({ node, weight }) => {
         distances.set(node, Math.min(distances.get(node), minDist + weight));

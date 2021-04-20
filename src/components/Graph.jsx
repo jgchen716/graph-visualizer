@@ -118,6 +118,7 @@ class Graph extends Component {
         case "dijkstra":
           // run dijkstra
           if (this.state.selectedId >= 0) {
+            console.log("running dijkstra");
             result = dijkstra(this, this.state.selectedId);
           }
           break;
@@ -141,7 +142,6 @@ class Graph extends Component {
           result = triadicClosure(this);
           break;
         default:
-          console.log("Invalid algorithm");
           break;
       }
       this.setState({
@@ -150,7 +150,6 @@ class Graph extends Component {
       });
       updated = true;
     }
-
     return updated;
   }
 
@@ -386,7 +385,7 @@ class Graph extends Component {
           {edges}
           {nodes}
         </div>
-        <Results result={this.state.result} algorithm={this.state.algorithm} />
+        <Results result={this.state.results} algorithm={this.state.algorithm} />
       </div>
     );
   }
