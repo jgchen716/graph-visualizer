@@ -14,12 +14,14 @@ import triadicClosure from "../algos/triadicClosure";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
+// dimensions for nodes
 const DIM = 62.5;
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+// styles for drawing nodes
 const circleStyle = (selected, x, y) => {
   return {
     padding: 0,
@@ -37,10 +39,12 @@ const circleStyle = (selected, x, y) => {
   };
 };
 
+// toggles color of edges if selected
 const edgeColor = (selected) => {
   return selected ? "#ffd3b4" : "#98ddca";
 };
 
+// initial state for graph canvas
 const initialState = (props) => {
   return {
     nextId: 0,
@@ -62,11 +66,10 @@ const ALGOS_NEED_SELECTED_NODE = ["bfs", "dfs", "dijkstra"];
 class Graph extends Component {
   constructor(props) {
     super(props);
-    // Map<Number, Object{Number, Number}[]>
-    // Map<Node, Object{Node, Edge Weight}[]>
+    // maps node to object with node as key and edge weight as value
     this.adjList = new Map();
     this.nodeToElement = new Map();
-    this.deltaPositions = new Map();
+    // set initial state
     this.state = initialState(props);
 
     this.getClickCoords = this.getClickCoords.bind(this);
@@ -116,7 +119,6 @@ class Graph extends Component {
     if (this.state.cleared !== nextProps.cleared) {
       this.adjList = new Map();
       this.nodeToElement = new Map();
-      this.deltaPositions = new Map();
       this.setState(initialState(nextProps));
       updated = true;
     }
@@ -201,10 +203,6 @@ class Graph extends Component {
           bounds="parent"
           key={id}
           onDrag={(e, ui) => {
-            this.deltaPositions.set(id, {
-              x: this.deltaPositions.get(id)["x"] + ui.deltaX,
-              y: this.deltaPositions.get(id)["y"] + ui.deltaY,
-            });
             this.forceUpdate();
           }}
         >
@@ -221,9 +219,10 @@ class Graph extends Component {
                 this.addEdge(this.state.selectedId, id, 1);
               } else {
                 this.selectNode(e, id);
-                this.setState({
-                  selectedEdge: { a: -1, b: -1 },
-                });
+                // this.setState({
+                //   ,
+                // });
+                this.forceUpdate();
               }
               this.forceUpdate();
             }}
@@ -234,7 +233,6 @@ class Graph extends Component {
           </div>
         </Draggable>
       ));
-      this.deltaPositions.set(id, { x: x, y: y });
 
       this.setState({ selectedId: id });
       this.forceUpdate();
@@ -255,7 +253,6 @@ class Graph extends Component {
       // remove entry in adjacency list
       this.adjList.delete(id);
       this.nodeToElement.delete(id);
-      this.deltaPositions.delete(id);
     });
     this.forceUpdate();
     return this;
@@ -298,7 +295,11 @@ class Graph extends Component {
   };
 
   selectNode = (e, id) => {
-    this.setState({ selectedId: id, changed: true });
+    this.setState({
+      selectedId: id,
+      selectedEdge: { a: -1, b: -1 },
+      changed: true,
+    });
     console.log(this.state.changed);
     this.shouldComponentUpdate({
       cleared: this.state.cleared,
@@ -323,12 +324,6 @@ class Graph extends Component {
     const drawnEdges = [];
     this.adjList.forEach((neighbors, id) => {
       neighbors.forEach((neighbor) => {
-        // const x1 = this.deltaPositions.get(id)["x"];
-        // const y1 = this.deltaPositions.get(id)["y"];
-        // const x2 = this.deltaPositions.get(neighbor.node)["x"];
-        // const y2 = this.deltaPositions.get(neighbor.node)["y"];
-
-        // console.log(`(${x1},${y1}) & (${x2},${y2})`);
         if (
           !this.state.undirected ||
           !drawnEdges.some(
