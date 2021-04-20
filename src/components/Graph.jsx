@@ -128,7 +128,6 @@ class Graph extends Component {
       this.state.algorithm !== nextProps.selectedAlgorithm ||
       this.state.changed
     ) {
-      console.log(nextProps.selectedAlgorithm);
       let result;
       switch (nextProps.selectedAlgorithm) {
         case "bfs":
@@ -203,6 +202,7 @@ class Graph extends Component {
           bounds="parent"
           key={id}
           onDrag={(e, ui) => {
+            this.setState({ changed: true });
             this.forceUpdate();
           }}
         >
@@ -219,10 +219,6 @@ class Graph extends Component {
                 this.addEdge(this.state.selectedId, id, 1);
               } else {
                 this.selectNode(e, id);
-                // this.setState({
-                //   ,
-                // });
-                this.forceUpdate();
               }
               this.forceUpdate();
             }}
@@ -234,8 +230,9 @@ class Graph extends Component {
         </Draggable>
       ));
 
-      this.setState({ selectedId: id });
-      this.forceUpdate();
+      this.setState({ selectedId: id }, () => {
+        this.forceUpdate();
+      });
     }
     return this;
   };
@@ -295,18 +292,22 @@ class Graph extends Component {
   };
 
   selectNode = (e, id) => {
-    this.setState({
-      selectedId: id,
-      selectedEdge: { a: -1, b: -1 },
-      changed: true,
-    });
-    console.log(this.state.changed);
-    this.shouldComponentUpdate({
-      cleared: this.state.cleared,
-      selectedType: this.state.undirected ? "undirected" : "directed",
-      selectedWeight: this.state.unweighted ? "unweighted" : "weighted",
-      selectedAlgorithm: this.state.algorithm,
-    });
+    this.setState(
+      {
+        selectedId: id,
+        selectedEdge: { a: -1, b: -1 },
+        changed: true,
+      },
+      () => {
+        this.shouldComponentUpdate({
+          cleared: this.state.cleared,
+          selectedType: this.state.undirected ? "undirected" : "directed",
+          selectedWeight: this.state.unweighted ? "unweighted" : "weighted",
+          selectedAlgorithm: this.state.algorithm,
+        });
+      }
+    );
+
     this.forceUpdate();
     e.stopPropagation();
   };
@@ -319,7 +320,6 @@ class Graph extends Component {
       nodes.push(res.value());
       res = it.next();
     }
-    console.log(this.state.selectedId);
     const edges = [];
     const drawnEdges = [];
     this.adjList.forEach((neighbors, id) => {
@@ -390,6 +390,7 @@ class Graph extends Component {
 
                   this.forceUpdate();
                 }
+                this.setState({ changed: true });
               }}
             />
           );

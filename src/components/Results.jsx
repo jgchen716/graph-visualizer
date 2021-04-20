@@ -196,11 +196,6 @@ const resultsToText = (result, algorithm) => {
 };
 
 const Results = ({ result, algorithm }) => {
-  console.log(
-    `cond1: ${result === undefined}   cond2: ${
-      algorithm === undefined
-    }    cond3: ${algorithm === ""}`
-  );
   const emptyCondition =
     result === undefined || algorithm === undefined || algorithm === "";
   return emptyCondition ? (
