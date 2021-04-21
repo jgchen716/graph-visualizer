@@ -36,8 +36,9 @@ const Toolbar = ({
 			<br />
 			<br />
 			Also, note that for some algorithms (BFS, DFS, and Dijkstra), a node must
-			be selected in order to run the algorithm. Selecting various nodes will
-			"live update" the results pane.
+			be selected in order to run the algorithm. Once run, the algorithm's
+			results will be displayed in the Results pane on the right side of the
+			screen.
 		</>
 	);
 
