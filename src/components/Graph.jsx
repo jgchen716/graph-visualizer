@@ -41,7 +41,7 @@ const edgeColor = (selected) => {
 const initialState = (props) => {
   return {
     nextId: 0,
-    selectedId: 1,
+    selectedId: -1,
     selectedEdge: { a: -1, b: -1 },
     undirected: props.selectedType === "undirected",
     unweighted: props.selectedWeight === "unweighted",
@@ -67,6 +67,7 @@ class Graph extends Component {
     this.addNode = this.addNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.addEdge = this.addEdge.bind(this);
+    console.log(this.state);
   }
 
   // TODO (not as important since this doesn't affect performance too much - and not visible from normal usage): fix bug where this gets called multiple times
