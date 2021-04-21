@@ -2,7 +2,7 @@
 
 ## Application
 
-This project can be found [here]().
+This project can be found [here](https://jgchen716.github.io/graph-visualizer/).
 
 ## Overview
 
