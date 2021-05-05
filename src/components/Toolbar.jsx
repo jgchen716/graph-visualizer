@@ -67,7 +67,6 @@ const Toolbar = ({
     } else if (alg === "bridges") {
       return selectedType !== "undirected";
     } else if (alg === "topo sort") {
-      // need to check for cycles??
       return selectedType !== "directed";
     } else {
       return false;
