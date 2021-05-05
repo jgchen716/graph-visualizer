@@ -49,8 +49,6 @@ const initialState = (props) => {
     cleared: props.cleared,
     results: props.result ? props.result : "",
     open: false,
-
-    // classes: useStyles(),
   };
 };
 
@@ -69,7 +67,6 @@ class Graph extends Component {
     this.addEdge = this.addEdge.bind(this);
   }
 
-  // TODO (not as important since this doesn't affect performance too much - and not visible from normal usage): fix bug where this gets called multiple times
   shouldComponentUpdate(nextProps) {
     // condition to updated weight and directionality
     let updated = false;
@@ -133,7 +130,6 @@ class Graph extends Component {
           break;
         case "clustering":
           // run clustering
-          // TODO: do we want to run CC on all nodes?
           if (this.state.selectedId >= 0) {
             result = clusteringCoefficient(this, this.state.selectedId);
           }
