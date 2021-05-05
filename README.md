@@ -8,7 +8,7 @@ This project can be found [here](https://jgchen716.github.io/graph-visualizer/).
 
 This project is a graph visualizer built in React and bootstrapped with [Create React App](https://github.com/facebook/create-react-app) that allows users to add nodes and edges to a canvas and then perform a number of algorithms on the graph they've created.
 
-The algorithms include traditional graph algorithms like BFS, DFS, and Dijkstra's shortest path algorithm, but also allow users to analyze some properties defined in social networks such as calculate the clustering coefficient for a given node and analyze what edges would be added based on triadic closure.
+The algorithms include traditional graph algorithms like BFS, DFS, and Dijkstra's shortest path algorithm, but also include some properties that are useful when analyzing social networks such as clustering coefficient for a given node and triadic closure (shows edges that would likely form based on triadic closure).
 
 Once run, the results of each algorithm are displayed in a "results" pane on the right side of the screen. The written output varies for each algorithm—for example, running BFS from a given node will display each of the layers/frontiers of the BFS traversal.
 
