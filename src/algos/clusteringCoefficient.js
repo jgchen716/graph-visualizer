@@ -33,10 +33,7 @@ const clusteringIndividual = (g, node) => {
   const denom = g.state.undirected
     ? numPairs
     : numNeighbors * (numNeighbors - 1);
-  return denom !== 0
-    ? numEdges /
-        (g.state.undirected ? numPairs : numNeighbors * (numNeighbors - 1))
-    : 0;
+  return denom !== 0 ? numEdges / denom : 0;
 };
 
 // calculates factorial, used in calculation of all possible pairs
