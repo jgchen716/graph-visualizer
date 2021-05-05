@@ -1,4 +1,3 @@
-// INVARIANT: only works for UNDIRECTED graph
 // calculates clustering coefficient for given node
 const clusteringCoefficient = (g) => {
   const res = [];
@@ -31,7 +30,13 @@ const clusteringIndividual = (g, node) => {
 
   // divide by 2 if undirected
   const numEdges = count / (g.state.undirected ? 2.0 : 1.0);
-  return numEdges / numPairs;
+  const denom = g.state.undirected
+    ? numPairs
+    : numNeighbors * (numNeighbors - 1);
+  return denom !== 0
+    ? numEdges /
+        (g.state.undirected ? numPairs : numNeighbors * (numNeighbors - 1))
+    : 0;
 };
 
 // calculates factorial, used in calculation of all possible pairs
