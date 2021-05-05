@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/graph-visualizer/static/css/main.2cc119aa.chunk.css",
-    "main.js": "/graph-visualizer/static/js/main.702ffb27.chunk.js",
-    "main.js.map": "/graph-visualizer/static/js/main.702ffb27.chunk.js.map",
+    "main.js": "/graph-visualizer/static/js/main.e75dbdb3.chunk.js",
+    "main.js.map": "/graph-visualizer/static/js/main.e75dbdb3.chunk.js.map",
     "runtime-main.js": "/graph-visualizer/static/js/runtime-main.5b4279c1.js",
     "runtime-main.js.map": "/graph-visualizer/static/js/runtime-main.5b4279c1.js.map",
-    "static/js/2.234a6d80.chunk.js": "/graph-visualizer/static/js/2.234a6d80.chunk.js",
-    "static/js/2.234a6d80.chunk.js.map": "/graph-visualizer/static/js/2.234a6d80.chunk.js.map",
+    "static/js/2.d4cfe44f.chunk.js": "/graph-visualizer/static/js/2.d4cfe44f.chunk.js",
+    "static/js/2.d4cfe44f.chunk.js.map": "/graph-visualizer/static/js/2.d4cfe44f.chunk.js.map",
     "index.html": "/graph-visualizer/index.html",
     "static/css/main.2cc119aa.chunk.css.map": "/graph-visualizer/static/css/main.2cc119aa.chunk.css.map",
-    "static/js/2.234a6d80.chunk.js.LICENSE.txt": "/graph-visualizer/static/js/2.234a6d80.chunk.js.LICENSE.txt"
+    "static/js/2.d4cfe44f.chunk.js.LICENSE.txt": "/graph-visualizer/static/js/2.d4cfe44f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.5b4279c1.js",
-    "static/js/2.234a6d80.chunk.js",
+    "static/js/2.d4cfe44f.chunk.js",
     "static/css/main.2cc119aa.chunk.css",
-    "static/js/main.702ffb27.chunk.js"
+    "static/js/main.e75dbdb3.chunk.js"
   ]
 }
