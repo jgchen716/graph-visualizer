@@ -10,8 +10,9 @@ const emptyResults = (
 );
 
 const saveResults = (alg, res) => {
-  const resultObj = { algorithm: alg, result: res };
-  axios.post('localhost:3001/graph', resultObj).then(response => console.log(response));
+  const resultObj = { algorithm: alg, result: res.toString() };
+  console.log(resultObj);
+  axios.post('http://localhost:3001/results', resultObj).then(response => console.log(response));
 };
 
 const resultsToText = (result, algorithm) => {
