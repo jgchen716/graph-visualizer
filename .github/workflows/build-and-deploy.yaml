@@ -28,7 +28,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event.pull_request.closed == true && github.event.pull_request.merged == true))
         uses: docker/build-push-action@v2
         with:
-          context: web
+          context: .
           push: true
           tags: |
             ghcr.io/jgchen716/graph-visualizer/frontend:${{ github.sha }}
