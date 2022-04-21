@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+spec:
+  rules:
+    - host: "jgchen.cis188.org"
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 3000
+
+          - path: "/api"
+            pathType: Prefix
+            backend:
+              service:
+                name: server-service
+                port:
+                  number: 3001
+
+  tls:
+    - hosts:
+        - "jgchen.cis188.org"
+      secretName: jgchen-cis188-org-tls

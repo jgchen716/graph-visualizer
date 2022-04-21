@@ -12,7 +12,7 @@ const emptyResults = (
 const saveResults = (alg, res) => {
   const resultObj = { algorithm: alg, result: res.toString() };
   console.log(resultObj);
-  axios.post('http://localhost:3001/results', resultObj).then(response => console.log(response));
+  axios.post('https://jgchen.cis188.org/api/results', resultObj).then(response => console.log(response));
 };
 
 const resultsToText = (result, algorithm) => {

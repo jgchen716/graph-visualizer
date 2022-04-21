@@ -1,0 +1,56 @@
+name: Graph Visualizer
+
+# Run this workflow every time a new commit pushed to your repository
+on: push
+
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  build:
+    # Name the Job
+    name: Build and publish docker image
+    needs: test
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || (github.event.pull_request.closed == true && github.event.pull_request.merged == true))
+        uses: docker/build-push-action@v2
+        with:
+          context: web
+          push: true
+          tags: |
+            ghcr.io/jgchen716/graph-visualizer/frontend:${{ github.sha }}
+            ghcr.io/jgchen716/graph-visualizer/server:${{ github.sha }}
+  deploy:
+    name: Deploy latest version of code
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || (github.event.pull_request.closed == true && github.event.pull_request.merged == true))
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate kubeconfig
+        run: aws eks --region us-east-1 update-kubeconfig --name cis188 --role-arn arn:aws:iam::474844133309:role/jgchen --alias cis188
