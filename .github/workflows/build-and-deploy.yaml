@@ -30,7 +30,7 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ghcr.io/jgchen716/graph-visualizer/frontend:${{ github.sha }}
+          tags: ghcr.io/jgchen716/graph-visualizer/frontend:v0
 
       - name: Build and push server
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event.pull_request.closed == true && github.event.pull_request.merged == true))
@@ -38,7 +38,7 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ghcr.io/jgchen716/graph-visualizer/server:${{ github.sha }}
+          tags: ghcr.io/jgchen716/graph-visualizer/server:v0
 
   deploy:
     name: Deploy latest version of code

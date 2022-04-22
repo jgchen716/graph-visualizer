@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend-deployment
-          # TODO: add tag???
-          image: ghcr.io/jgchen716/graph-visualizer/frontend
+          image: ghcr.io/jgchen716/graph-visualizer/frontend:v0
           ports:
             - containerPort: 3000
 ---

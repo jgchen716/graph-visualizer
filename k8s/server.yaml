@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
         - name: server-deployment
-          #TODO: add tag??
-          image: ghcr.io/jgchen716/graph-visualizer/server
+          image: ghcr.io/jgchen716/graph-visualizer/server:v0
           ports:
             - containerPort: 3001
 ---
