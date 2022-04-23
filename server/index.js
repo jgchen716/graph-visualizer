@@ -45,8 +45,8 @@ app.post("/results", (req, res) => {
             return console.log(err.message);
         }
         console.log('Row was added to the table');
+        res.json({ "message": "Ok" })
     });
-    res.send(req.body);
 });
 
 app.listen(PORT, () => {
