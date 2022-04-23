@@ -45,7 +45,7 @@ app.post("/results", (req, res) => {
             return console.log(err.message);
         }
         console.log('Row was added to the table');
-        res.send(Req.body);
+        res.send(req.body);
     });
 });
 
