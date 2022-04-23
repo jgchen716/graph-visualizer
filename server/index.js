@@ -29,9 +29,13 @@ app.get("/", (req, res) => {
 app.get("/results", (req, res) => {
     db.all("SELECT algorithm, result FROM algorithm_results",
         (error, rows) => {
-            rows.forEach((row) => {
-                console.log(row.algorithm + ": " + row.result);
-            })
+            if (error) {
+                console.log(error);
+            } else {
+                rows.forEach((row) => {
+                    console.log(row.algorithm + ": " + row.result);
+                });
+            }
         });
 });
 
@@ -41,7 +45,8 @@ app.post("/results", (req, res) => {
             return console.log(err.message);
         }
         console.log('Row was added to the table');
-    })
+        res.send(Req.body);
+    });
 });
 
 app.listen(PORT, () => {
