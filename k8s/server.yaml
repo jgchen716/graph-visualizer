@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-deployment
+  name: graph-visualizer-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: server-deployment
+      app: graph-visualizer-backend
   template:
     metadata:
       labels:
-        app: server-deployment
+        app: graph-visualizer-backend
     spec:
       containers:
-        - name: server-deployment
+        - name: server
           image: ghcr.io/jgchen716/graph-visualizer/server:v0
           ports:
             - containerPort: 3001
@@ -25,6 +25,6 @@ metadata:
   name: server-service
 spec:
   selector:
-    app: server-service
+    app: graph-visualizer-backend
   ports:
     - port: 3001
