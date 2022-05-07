@@ -2,11 +2,11 @@
 
 ## Application
 
-This project can be found [here](https://jgchen716.github.io/graph-visualizer/).
+This project can be found [here](https://jgchen716.github.io/graph-visualizer/) and [here](https://jgchen.cis188.org/).
 
 ## Overview
 
-This project is a graph visualizer built in React and bootstrapped with [Create React App](https://github.com/facebook/create-react-app) that allows users to add nodes and edges to a canvas and then perform a number of algorithms on the graph they've created.
+This project is a containerized graph visualizer web app built in React and bootstrapped with [Create React App](https://github.com/facebook/create-react-app) that allows users to add nodes and edges to a canvas and then perform a number of algorithms on the graph they've created.
 
 The algorithms include traditional graph algorithms like BFS, DFS, and Dijkstra's shortest path algorithm, but also include some properties that are useful when analyzing social networks such as clustering coefficient for a given node and triadic closure (shows edges that would likely form based on triadic closure).
 
